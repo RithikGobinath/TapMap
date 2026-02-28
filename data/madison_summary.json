@@ -1,0 +1,172 @@
+{
+  "pwsid": "WI1130224",
+  "system_name": "Madison Water Utility",
+  "population_served": 272000,
+  "total_violations": 327,
+  "active_violations": 1,
+  "active_violation_detail": "Public notification failure since Oct 2024 (unresolved)",
+  "lead_90th_percentile_latest_mg_L": 0.0018,
+  "lead_action_level_mg_L": 0.015,
+  "lead_status": "Below action level",
+  "lead_trend": [
+    {
+      "year": 1992,
+      "SAMPLE_MEASURE": 0.016
+    },
+    {
+      "year": 1997,
+      "SAMPLE_MEASURE": 0.017
+    },
+    {
+      "year": 1997,
+      "SAMPLE_MEASURE": 0.016
+    },
+    {
+      "year": 2011,
+      "SAMPLE_MEASURE": 0.00257
+    },
+    {
+      "year": 2011,
+      "SAMPLE_MEASURE": 0.00336
+    },
+    {
+      "year": 2014,
+      "SAMPLE_MEASURE": 0.00337
+    },
+    {
+      "year": 2017,
+      "SAMPLE_MEASURE": 0.00316
+    },
+    {
+      "year": 2020,
+      "SAMPLE_MEASURE": 0.00324
+    },
+    {
+      "year": 2023,
+      "SAMPLE_MEASURE": 0.0018
+    }
+  ],
+  "wells": [
+    {
+      "FACILITY_ID": "1",
+      "FACILITY_NAME": "BF501"
+    },
+    {
+      "FACILITY_ID": "10",
+      "FACILITY_NAME": "BF510"
+    },
+    {
+      "FACILITY_ID": "11",
+      "FACILITY_NAME": "BF511"
+    },
+    {
+      "FACILITY_ID": "12",
+      "FACILITY_NAME": "BF512"
+    },
+    {
+      "FACILITY_ID": "13",
+      "FACILITY_NAME": "BF513"
+    },
+    {
+      "FACILITY_ID": "14",
+      "FACILITY_NAME": "BF514"
+    },
+    {
+      "FACILITY_ID": "15",
+      "FACILITY_NAME": "BF515"
+    },
+    {
+      "FACILITY_ID": "16",
+      "FACILITY_NAME": "BF516"
+    },
+    {
+      "FACILITY_ID": "17",
+      "FACILITY_NAME": "BF517"
+    },
+    {
+      "FACILITY_ID": "18",
+      "FACILITY_NAME": "BF518"
+    },
+    {
+      "FACILITY_ID": "19",
+      "FACILITY_NAME": "BF519"
+    },
+    {
+      "FACILITY_ID": "2",
+      "FACILITY_NAME": "BF502"
+    },
+    {
+      "FACILITY_ID": "24",
+      "FACILITY_NAME": "BF523"
+    },
+    {
+      "FACILITY_ID": "20",
+      "FACILITY_NAME": "BF520"
+    },
+    {
+      "FACILITY_ID": "22",
+      "FACILITY_NAME": "BF521"
+    },
+    {
+      "FACILITY_ID": "23",
+      "FACILITY_NAME": "BF522"
+    },
+    {
+      "FACILITY_ID": "25",
+      "FACILITY_NAME": "BF524"
+    },
+    {
+      "FACILITY_ID": "26",
+      "FACILITY_NAME": "BF567"
+    },
+    {
+      "FACILITY_ID": "27",
+      "FACILITY_NAME": "AX011"
+    },
+    {
+      "FACILITY_ID": "28",
+      "FACILITY_NAME": "LK016"
+    },
+    {
+      "FACILITY_ID": "29",
+      "FACILITY_NAME": "RG653"
+    },
+    {
+      "FACILITY_ID": "3",
+      "FACILITY_NAME": "BF503"
+    },
+    {
+      "FACILITY_ID": "30",
+      "FACILITY_NAME": "RG700"
+    },
+    {
+      "FACILITY_ID": "4",
+      "FACILITY_NAME": "BF504"
+    },
+    {
+      "FACILITY_ID": "5",
+      "FACILITY_NAME": "BF505"
+    },
+    {
+      "FACILITY_ID": "6",
+      "FACILITY_NAME": "BF506"
+    },
+    {
+      "FACILITY_ID": "7",
+      "FACILITY_NAME": "BF507"
+    },
+    {
+      "FACILITY_ID": "8",
+      "FACILITY_NAME": "BF508"
+    },
+    {
+      "FACILITY_ID": "9",
+      "FACILITY_NAME": "BF509"
+    },
+    {
+      "FACILITY_ID": "31",
+      "FACILITY_NAME": "YM827"
+    }
+  ],
+  "well_count": 30
+}
