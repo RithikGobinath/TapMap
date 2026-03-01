@@ -145,8 +145,14 @@ class WaterScoreEngine:
     """Phase 2.1 scoring engine backed by canonical multi-contaminant well data."""
 
     def __init__(self, data_dir: Path | None = None) -> None:
-        repo_root = Path(__file__).resolve().parents[2]
-        self._data_dir = data_dir or (repo_root / "data")
+        module_dir = Path(__file__).resolve().parent
+        candidate_dirs = [
+            module_dir.parent / "data",        # backend/data (and Cloud Run source deploy)
+            module_dir.parent.parent / "data",  # repo-root data during local dev
+            Path("/workspace/data"),            # explicit Cloud Build/Run fallback
+            Path("/data"),
+        ]
+        self._data_dir = data_dir or next((path for path in candidate_dirs if path.exists()), candidate_dirs[0])
         self._service_area_rings: dict[str, list[list[list[float]]]] = {}
         self._well_records: dict[str, WellRecord] = {}
         self._scored_wells: dict[str, ScoredWell] = {}
