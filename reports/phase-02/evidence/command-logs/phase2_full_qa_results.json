@@ -1,0 +1,173 @@
+{
+  "summary": {
+    "contract": {
+      "passed": 6,
+      "total": 6,
+      "ok": true
+    },
+    "negative": {
+      "passed": 5,
+      "total": 5,
+      "ok": true
+    },
+    "integration": {
+      "passed": 6,
+      "total": 6,
+      "ok": true
+    },
+    "performance": {
+      "passed": 3,
+      "total": 3,
+      "ok": true
+    },
+    "resilience": {
+      "passed": 3,
+      "total": 3,
+      "ok": true
+    },
+    "privacy": {
+      "passed": 2,
+      "total": 2,
+      "ok": true
+    }
+  },
+  "results": {
+    "contract": [
+      {
+        "name": "GET /api/health status 200",
+        "ok": true,
+        "detail": "200"
+      },
+      {
+        "name": "GET /api/health body contains ok true",
+        "ok": true,
+        "detail": "{\"ok\": true}"
+      },
+      {
+        "name": "GET /api/wells status 200",
+        "ok": true,
+        "detail": "200"
+      },
+      {
+        "name": "GET /api/wells wells list present",
+        "ok": true,
+        "detail": "list"
+      },
+      {
+        "name": "POST /api/score status 200",
+        "ok": true,
+        "detail": "200"
+      },
+      {
+        "name": "POST /api/score response keys present",
+        "ok": true,
+        "detail": "dict_keys(['breakdown', 'grade', 'lastUpdated', 'limits', 'outOfZone', 'score', 'wellIds', 'zoneId'])"
+      }
+    ],
+    "negative": [
+      {
+        "name": "/api/score invalid payload -> type string lat",
+        "ok": true,
+        "detail": "400"
+      },
+      {
+        "name": "/api/score invalid payload -> lat out of range",
+        "ok": true,
+        "detail": "400"
+      },
+      {
+        "name": "/api/score invalid payload -> missing lng",
+        "ok": true,
+        "detail": "400"
+      },
+      {
+        "name": "/api/score invalid payload -> empty json",
+        "ok": true,
+        "detail": "400"
+      },
+      {
+        "name": "/api/submit missing fields returns 400",
+        "ok": true,
+        "detail": "400"
+      }
+    ],
+    "integration": [
+      {
+        "name": "Wells count >= 20",
+        "ok": true,
+        "detail": "22"
+      },
+      {
+        "name": "Well IDs unique",
+        "ok": true,
+        "detail": "total=22, unique=22"
+      },
+      {
+        "name": "Well grade matches score band",
+        "ok": true,
+        "detail": "[]"
+      },
+      {
+        "name": "Well riskLevel in [0,100]",
+        "ok": true,
+        "detail": "[]"
+      },
+      {
+        "name": "Score at well coordinate maps to same well id",
+        "ok": true,
+        "detail": "missed=0 sample=[]"
+      },
+      {
+        "name": "Well 15 lower score than Well 7",
+        "ok": true,
+        "detail": "15=60.8 7=96.8"
+      }
+    ],
+    "performance": [
+      {
+        "name": "GET /api/health p95 < 120ms",
+        "ok": true,
+        "detail": "{\"avg_ms\": 0.2851899999222951, \"p95_ms\": 0.4797000001417473, \"max_ms\": 1.750800001900643}"
+      },
+      {
+        "name": "GET /api/wells p95 < 120ms",
+        "ok": true,
+        "detail": "{\"avg_ms\": 0.5429630000071484, \"p95_ms\": 0.9840999991865829, \"max_ms\": 1.931699996930547}"
+      },
+      {
+        "name": "POST /api/score p95 < 120ms",
+        "ok": true,
+        "detail": "{\"avg_ms\": 0.9031950001008227, \"p95_ms\": 1.5522000030614436, \"max_ms\": 2.639300000737421}"
+      }
+    ],
+    "resilience": [
+      {
+        "name": "/api/score malformed JSON returns 400",
+        "ok": true,
+        "detail": "400"
+      },
+      {
+        "name": "/api/submit wrong content-type returns 400",
+        "ok": true,
+        "detail": "400"
+      },
+      {
+        "name": "/api/wells returns 503 when engine fails to initialize",
+        "ok": true,
+        "detail": "503"
+      }
+    ],
+    "privacy": [
+      {
+        "name": "/api/submit response omits raw lat/lng",
+        "ok": true,
+        "detail": "{\"geohash\": \"stubgh6\", \"stored\": true, \"submissionId\": \"stub-14f993fa\"}"
+      },
+      {
+        "name": "/api/score response omits input lat/lng fields",
+        "ok": true,
+        "detail": "{\"breakdown\": {\"infrastructure\": 6.88, \"lead\": 4.275, \"nitrate\": 0.6, \"pfas\": 0.0, \"violations\": 0, \"voc\": 0.2}, \"grade\": \"B\", \"lastUpdated\": \"2025-03-25\", \"limits\": {\"lead\": 15.0, \"nitrate\": 10.0, \"pfas\": 9.0, \"voc\": 5.0}, \"outOfZone\": true, \"score\": 89.9, \"wellIds\": [\"27\"], \"zoneId\": \"27\"}"
+      }
+    ]
+  }
+}
