@@ -1,17 +1,16 @@
 import type { GeocodedPoint } from "../types/phase2";
 
-interface GeocodingApiResponse {
-  status: string;
-  error_message?: string;
-  results: Array<{
-    formatted_address: string;
-    geometry: {
-      location: {
-        lat: number;
-        lng: number;
-      };
+interface PlacesTextSearchResponse {
+  places?: Array<{
+    formattedAddress?: string;
+    location?: {
+      latitude?: number;
+      longitude?: number;
     };
   }>;
+  error?: {
+    message?: string;
+  };
 }
 
 export async function geocodeAddress(address: string): Promise<GeocodedPoint> {
@@ -28,27 +27,39 @@ export async function geocodeAddress(address: string): Promise<GeocodedPoint> {
   const timeout = setTimeout(() => controller.abort(), 8000);
 
   try {
-    const url = new URL("https://maps.googleapis.com/maps/api/geocode/json");
-    url.searchParams.set("address", address);
-    url.searchParams.set("key", apiKey);
-
-    const response = await fetch(url.toString(), { signal: controller.signal });
+    // Use Places Text Search for browser-safe geocoding with referrer-restricted API keys.
+    const response = await fetch("https://places.googleapis.com/v1/places:searchText", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": "places.formattedAddress,places.location"
+      },
+      body: JSON.stringify({
+        textQuery: address,
+        languageCode: "en",
+        regionCode: "US"
+      }),
+      signal: controller.signal
+    });
     if (!response.ok) {
       throw new Error(`Geocoding request failed with status ${response.status}.`);
     }
 
-    const payload = (await response.json()) as GeocodingApiResponse;
+    const payload = (await response.json()) as PlacesTextSearchResponse;
+    const first = payload.places?.[0];
+    const lat = first?.location?.latitude;
+    const lng = first?.location?.longitude;
+    const formattedAddress = first?.formattedAddress?.trim();
 
-    if (payload.status !== "OK" || payload.results.length === 0) {
-      throw new Error(payload.error_message || `Geocoding failed: ${payload.status}`);
+    if (!first || lat == null || lng == null || !formattedAddress) {
+      throw new Error(payload.error?.message || "No matching address found.");
     }
 
-    const first = payload.results[0];
-
     return {
-      formattedAddress: first.formatted_address,
-      lat: first.geometry.location.lat,
-      lng: first.geometry.location.lng
+      formattedAddress,
+      lat,
+      lng
     };
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {

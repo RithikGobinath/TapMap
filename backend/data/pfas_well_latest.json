@@ -82,7 +82,7 @@
     "pfoa_ppt": null,
     "pfos_ppt": null,
     "pfhxs_ppt": null,
-    "total_pfas_ppt": 8.0,
+    "total_pfas_ppt": null,
     "historical_max_pfas_ppt": null,
     "pfas_status": "detected",
     "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well14QualityReport.pdf"

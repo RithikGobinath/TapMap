@@ -65,13 +65,13 @@ def test_score_well_mix_equal_weights_matches_average() -> None:
     wells = {item["id"]: item for item in engine.list_wells()["wells"]}
     # Use two wells with PFAS category present to exercise full category surface.
     well_a = wells["6"]
-    well_b = wells["14"]
+    well_b = wells["11"]
 
-    mix = engine.score_well_mix(well_ids=["6", "14"], well_weights={"6": 50, "14": 50}, zone_id="test:6-14")
+    mix = engine.score_well_mix(well_ids=["6", "11"], well_weights={"6": 50, "11": 50}, zone_id="test:6-11")
 
     expected_score = round((well_a["score"] + well_b["score"]) / 2.0, 1)
     assert mix["score"] == expected_score
-    assert mix["zoneId"] == "test:6-14"
+    assert mix["zoneId"] == "test:6-11"
     assert mix["grade"] == _expected_grade(expected_score)
 
     for key in mix["availableCategories"]:

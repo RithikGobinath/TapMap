@@ -199,8 +199,7 @@ export function Phase2Map({
         <div style="font-family: Inter, sans-serif; min-width: 220px; line-height: 1.35;">
           <strong>${props.well_name}</strong><br/>
           Well ID: ${props.well_id}<br/>
-          Area: ${props.area_served_label ?? "Unknown"}<br/>
-          No backend well details loaded.
+          Area: ${props.area_served_label ?? "Unknown"}
         </div>
       `);
     } else {
@@ -308,7 +307,7 @@ export function Phase2Map({
                       Last sample: {row.well.latestTestDate || "N/A"}
                     </>
                   ) : (
-                    <>No backend well details loaded.</>
+                    <>Well detail snapshot is currently unavailable.</>
                   )}
                 </div>
               </Popup>

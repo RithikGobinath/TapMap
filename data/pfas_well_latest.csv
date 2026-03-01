@@ -6,7 +6,7 @@ well_id,sample_date,pfoa_ppt,pfos_ppt,pfhxs_ppt,total_pfas_ppt,historical_max_pf
 11,2025-03-24,,,,4.0,,detected,https://www.cityofmadison.com/water/documents/water-quality/Well11QualityReport.pdf
 12,2025-03-24,,,,0.0,,not_detected,https://www.cityofmadison.com/water/documents/water-quality/Well12QualityReport.pdf
 13,2025-03-24,,,,0.0,,not_detected,https://www.cityofmadison.com/water/documents/water-quality/Well13QualityReport.pdf
-14,2025-03-24,,,,8.0,,detected,https://www.cityofmadison.com/water/documents/water-quality/Well14QualityReport.pdf
+14,2025-03-24,,,,,,detected,https://www.cityofmadison.com/water/documents/water-quality/Well14QualityReport.pdf
 15,2024-04-12,,,,,56.0,no_current_sample,https://www.cityofmadison.com/water/documents/water-quality/Well15QualityReport.pdf
 16,2025-03-24,,,,0.0,,not_detected,https://www.cityofmadison.com/water/documents/water-quality/Well16QualityReport.pdf
 17,2025-03-24,,,,0.0,,not_detected,https://www.cityofmadison.com/water/documents/water-quality/Well17QualityReport.pdf
