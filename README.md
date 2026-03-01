@@ -22,7 +22,9 @@ TapMap is a full-stack web app that lets a user enter an address, map that addre
 
 ## Screenshots
 
-![TapMap live view](docs/main.png)
+- Main map: ![TapMap map](reports/phase-02/frontend-phase2-map.png)
+- Search success state: ![TapMap search](reports/phase-02/frontend-phase2-search-success.png)
+- Zone popup: ![TapMap popup](reports/phase-02/frontend-phase2-zone-popup.png)
 
 ## Architecture
 
