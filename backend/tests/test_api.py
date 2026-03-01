@@ -16,6 +16,14 @@ def test_health() -> None:
     assert response.status_code == 200
 
 
+def test_api_health() -> None:
+    app = create_app()
+    client = app.test_client()
+
+    response = client.get("/api/health")
+    assert response.status_code == 200
+
+
 def test_score_stub() -> None:
     app = create_app()
     client = app.test_client()

@@ -15,6 +15,10 @@ def create_app() -> Flask:
     def health() -> Tuple[Any, int]:
         return jsonify({"ok": True}), 200
 
+    @app.get("/api/health")
+    def api_health() -> Tuple[Any, int]:
+        return jsonify({"ok": True}), 200
+
     @app.post("/api/score")
     def score_stub() -> Tuple[Any, int]:
         payload: Dict[str, Any] = request.get_json(silent=True) or {}

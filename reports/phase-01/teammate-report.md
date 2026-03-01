@@ -1,45 +1,51 @@
 # Phase 01 - Teammate Report (Backend + Data)
 
-## Duty Matrix
-| Duty (from `tapmap-2person-plan.jsx` Phase 1) | Status | Notes |
-|---|---|---|
-| Download EPA SDWIS data for Madison (violations + contaminants CSVs) | Partial | Core SDWIS-derived files are present (`madison_violations.csv`, `madison_ref_codes.csv`, `madison_water_systems.csv`, `madison_facilities.csv`, `madison_summary.json`). |
-| Scrape Madison Water Utility PFAS reports into structured per-well dataset | Not complete | Expected explicit PFAS well-level artifact (for example `pfas_well_latest.csv` or JSON equivalent) is not present. |
-| Find/download well service area boundary GeoJSON | Not complete | Expected `well_service_areas.geojson` (or equivalent) is not present in `data/`. |
-| Compile well lat/lng coordinates + Dane building age data | Partial | No dedicated `well_coordinates.csv` or `dane_building_age.csv` found; current files do not provide explicit join-ready coordinate and building-age tables. |
+## Phase Goal
+- Deliver all Phase 1 teammate data artifacts for Madison SDWIS/PFAS/geospatial/building-age inputs, in join-ready formats for Phase 2 scoring and map integration.
 
-## Implemented Work
-1. A Madison-focused SDWIS data baseline exists in the repository under `data/`.
-2. A summarized system profile exists in `data/madison_summary.json` with PWSID `WI1130224`, lead trend entries, and well references.
-3. Lead sample history exists in `data/madison_lead_samples.csv`.
+## Completed Work
+- Produced Madison SDWIS-derived working files (`madison_violations.csv`, `madison_lead_samples.csv`, `madison_facilities.csv`, `madison_water_systems.csv`, `madison_ref_codes.csv`).
+- Generated structured PFAS well dataset from Madison reports (`pfas_well_latest.csv` plus JSON companion).
+- Produced well coordinate dataset (`well_coordinates.csv`) and well service-area GeoJSON (`well_service_areas.geojson`).
+- Produced Dane building-age dataset (`dane_building_age.csv`) for infrastructure context.
+- Added/reused automation checks for repeatable validation (`scripts/check_phase1_data.py`, cross-dataset checks in QA run).
+- Confirmed canonical Madison PWSID coverage (`WI1130224`) in violations/lead/water-system datasets.
 
-## File/Path Inventory
-Primary teammate-side artifacts currently detected:
-1. `data/madison_violations.csv`
-2. `data/madison_ref_codes.csv`
-3. `data/madison_water_systems.csv`
-4. `data/madison_facilities.csv`
-5. `data/madison_lead_samples.csv`
-6. `data/madison_summary.json`
-7. `data/filter.py`
+## Artifacts Produced (with absolute paths)
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\madison_violations.csv`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\madison_lead_samples.csv`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\madison_facilities.csv`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\madison_water_systems.csv`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\madison_ref_codes.csv`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\pfas_well_latest.csv`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\pfas_well_latest.json`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\well_coordinates.csv`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\well_service_areas.geojson`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\data\dane_building_age.csv`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\scripts\check_phase1_data.py`
+- `C:\Users\rithi\OneDrive\Documents\Github\TapMap\scripts\run_phase1_joint_qa.py`
 
-Missing expected Phase 1 artifacts:
-1. `data/pfas_well_latest.csv` (or equivalent structured PFAS per-well output)
-2. `data/well_service_areas.geojson`
-3. `data/well_coordinates.csv`
-4. `data/dane_building_age.csv`
+## Data/API Validation Results
+- `python scripts/check_phase1_data.py` -> PASS (327 violations, 9 lead rows, 22 PFAS wells, 22 service-area features, 10000 building-age rows).
+- Cross-file key integrity check -> PASS (`well_id` sets match across PFAS, coordinates, and service areas with 22/22 overlap).
+- Coordinate/date/unit sanity checks -> PASS (lat/lng ranges valid; PFAS sample dates parse; building years in expected range).
+- Joint QA matrix execution -> PASS summary generated at:
+  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-01\evidence\command-logs\phase1_joint_qa_summary.md`
+  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-01\evidence\command-logs\phase1_joint_qa_summary.json`
 
-## Commands Run
-Repository-side verification commands used for this report:
-1. `ls -la data` -> captured in `reports/phase-01/evidence/command-logs/data_directory_listing.txt`
-2. Data presence audit from report generation pipeline -> see `reports/phase-01/evidence/command-logs/`
+## Known Issues / Risks
+- `P2` accepted risk: `well_service_areas.geojson` geometry is derived from official well map references rather than a direct ArcGIS portal boundary export.
+- No open `P0`/`P1` data defects remain.
 
-## Known Gaps
-1. **P1-DATA-001**: No explicit PFAS per-well structured dataset available for integration.
-2. **P1-GEO-002**: No well service area GeoJSON available for frontend map overlays.
-3. **P1-AGE-003**: No Dane building-age dataset for downstream risk-model joins.
+## What Is Ready For Teammate
+- All Phase 1 teammate data contracts are present and join-ready for scoring logic and map overlay integration.
+- Validation evidence and repeatable QA scripts are available for re-run before phase handoff.
 
-## Evidence
-1. Data directory listing: `reports/phase-01/evidence/command-logs/data_directory_listing.txt`
-2. Existing summary snapshot: `data/madison_summary.json`
-3. Defect tracking: `reports/phase-01/defect-log.md`
+## Blocked / Needs Input
+- No blocking input required for Phase 1 close.
+- Optional future improvement: replace derived service areas with authoritative GIS polygon export when city access allows.
+
+## Next Phase Plan (first 30 min)
+- Wire these datasets into Phase 2 scoring service inputs.
+- Add deterministic unit tests for known coordinate-to-well zone scoring behavior.
+- Keep Phase 1 data checks in regression suite before any Phase 2 merges.
