@@ -1,43 +1,48 @@
-# Integration Report - Phase 02
+# Integration Report - Phase 02.1 (You Scope)
 
 ## Integration Freeze
-- Freeze start timestamp: 2026-03-01 14:05 CST
-- Freeze end timestamp: 2026-03-01 14:30 CST
-- Scope frozen: Baseline Phase 2 teammate backend/data deliverables only.
+- Freeze start timestamp: March 1, 2026 02:30 AM CT
+- Freeze end timestamp: March 1, 2026 03:05 AM CT
+- Scope frozen: Phase 2.1 solo integration (frontend + backend + city mapping).
 
 ## Implementation Completion Checks
-- [x] Teammate implementation complete for this phase.
-- [ ] You implementation complete for this phase.
+- [x] You implementation complete for this phase.
+- [x] Backend integration complete for this phase.
 
 ## Integrated Components
-- Component: Real WaterScore engine + API wiring
-  Path:
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\backend\app\scoring_engine.py`
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\backend\app\app.py`
-  Verification:
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\command-logs\test_backend_all.txt`
-- Component: Endpoint test coverage
-  Path:
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\backend\tests\test_api.py`
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\backend\tests\test_scoring_engine.py`
-  Verification:
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\command-logs\test_api.txt`
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\command-logs\test_scoring_engine.txt`
+1. Scoring engine and well-mix weighting
+- `/Users/sikander/Documents/TapMap/backend/app/scoring_engine.py`
+2. Address-to-well city mapper
+- `/Users/sikander/Documents/TapMap/backend/app/city_mapping.py`
+3. API wiring
+- `/Users/sikander/Documents/TapMap/backend/app/app.py`
+4. Frontend integration flow
+- `/Users/sikander/Documents/TapMap/frontend/src/pages/Phase2Page.tsx`
+- `/Users/sikander/Documents/TapMap/frontend/src/services/api.ts`
 
 ## End-to-End Verification
-- Flow: `lat/lng` -> `/api/score` -> computed score + breakdown, plus `/api/wells` full well list.
-  Result: PASS for backend-only baseline.
-  Evidence path:
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\api_score_response.json`
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\api_wells_response.json`
-  - `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\known_well_comparison.json`
+1. Address search -> city mapping -> weighted score snapshot
+- Result: PASS
+- Evidence:
+  - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/835_W_Dayton_St.png`
+  - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/610_Langdon_St.png`
+2. Street-type alias mapping (`Wy` -> `Way`)
+- Result: PASS
+- Evidence:
+  - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/750_Hilldale_Wy.png`
+3. No-city-match fallback behavior
+- Result: PASS
+- Evidence:
+  - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/600_N_Park_St.png`
+4. Backend + build checks
+- Result: PASS
+- Evidence:
+  - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_backend_tests_final.txt`
+  - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_frontend_build_final.txt`
 
 ## Integration Risks
-- Partner (`You`) frontend/map Phase 2 implementation is not present in this workspace.
-- Full cross-role joint integration gate is blocked until partner artifacts arrive.
-- Findings v2 expansion is deferred as Phase 2.1 by explicit scope split.
+1. City MyWells availability is an external dependency.
+2. Some addresses naturally return no city mapping and use fallback logic.
 
 ## Ready/Not Ready
-- Status: NOT READY
-- Notes: Teammate baseline is ready; full Phase 2 integration awaits `You` role completion.
-
+- Status: READY

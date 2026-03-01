@@ -1,0 +1,12 @@
+ADDRESS E2E CHECKS
+===================
+[OK] 835 W Dayton St, Madison, WI: mapped=['30', '27', '18', '19'] score=72.0 grade=C
+[OK] 610 Langdon St, Madison, WI: mapped=['19', '30', '27', '24', '18'] score=74.8 grade=C
+[OK] 750 Hilldale Wy, Madison, WI 53705: mapped=['14'] score=32.8 grade=F
+[OK] 119 E Olin Ave, Madison, WI: mapped=['30'] score=88.1 grade=B
+[OK] 1 W Main St, Madison, WI: mapped=['17', '24'] score=86.1 grade=B
+[MISS] 600 N Park St, Madison, WI: city mapping not found
+
+RANDOM LAT/LNG ROBUSTNESS (200 samples)
+=======================================
+failures=0/200

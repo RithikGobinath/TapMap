@@ -1,0 +1,6 @@
+coord_count 22
+pfas_count 22
+inorg_count 22
+coord_minus_pfas []
+coord_minus_inorg []
+pfas_minus_inorg []

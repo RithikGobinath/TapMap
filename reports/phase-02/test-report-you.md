@@ -1,49 +1,60 @@
-# Test Report - Phase 02
+# Test Report - Phase 02.1 (You Scope)
 
 ## Test Execution Summary
-- Environment: Local backend workspace (`C:\Users\rithi\OneDrive\Documents\Github\TapMap`)
-- Test window: 2026-03-01
-- Test owner(s): Teammate (backend/data)
-- [x] Teammate implementation complete before testing.
-- [ ] You implementation complete before testing.
+- Environment: `/Users/sikander/Documents/TapMap`
+- Test window: March 1, 2026
+- Test owner: You (frontend + integration with live backend)
+- [x] You implementation complete before testing.
+- [x] Teammate-dependent blockers removed for this checkpoint.
 
 ## Matrix Results
 | Category | Status (PASS/FAIL) | Evidence Path | Notes |
 | --- | --- | --- | --- |
-| Contract tests | PASS | `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\command-logs\test_api.txt` | API contract and required keys verified for backend scope. |
-| Integration tests | FAIL | `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\integration-report.md` | Cross-role integration blocked until `You` frontend/map deliverables are present. |
-| End-to-end tests | FAIL | `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\integration-report.md` | Full address->map->score flow cannot be run without partner UI integration. |
-| Negative/error tests | PASS | `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\command-logs\test_api.txt` | Invalid lat/lng and malformed payload paths return controlled errors. |
-| Regression tests | PASS | `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\command-logs\test_backend_all.txt` | Backend suite remains green after scoring engine updates. |
-| Performance spot checks | FAIL |  | Not executed for this backend-only checkpoint. |
-| Resilience tests | PASS | `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\command-logs\test_api.txt` | Out-of-zone fallback and missing-data paths handled deterministically. |
-| Privacy/security sanity tests | PASS | `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\api_score_response.json` | Score/wells responses do not expose sensitive user-submitted location history. |
+| Contract tests | PASS | `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_backend_tests_final.txt` | `/api/score`, `/api/wells`, `/api/address-wells` contracts validated via backend test suite. |
+| Integration tests | PASS | `/Users/sikander/Documents/TapMap/reports/phase-02/integration-report.md` | Frontend geocode + city mapping + weighted scoring all integrated. |
+| End-to-end tests | PASS | `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_address_e2e_checks.txt` | Address -> mapping -> weighted score verified across known Madison addresses. |
+| Negative/error tests | PASS | `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_backend_tests_final.txt` | Invalid payload, empty address, upstream failure, and out-of-zone fallback handled. |
+| Regression tests | PASS | `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_backend_tests_final.txt` | 36-test suite green after PFAS/mapping/scoring fixes. |
+| Performance spot checks | PASS | `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_perf_spotcheck.txt` | Spot checks documented and no blocking performance regressions found. |
+| Resilience tests | PASS | `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_resilience_privacy_checks.txt` | Retry/fallback and no-data paths remain deterministic. |
+| Privacy/security sanity tests | PASS | `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_resilience_privacy_checks.txt` | No sensitive personal location history exposed by API payloads. |
 
-## Detailed Test Cases
-- ID: PH2-TM-001
-  Expected: `GET /api/wells` returns full non-stub list.
-  Actual: 22 wells returned with contaminant/risk fields.
-  Result: PASS
-  Evidence: `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\api_wells_response.json`
-- ID: PH2-TM-002
-  Expected: Well 15 scores lower than clean well 7.
-  Actual: Comparison assertion true.
-  Result: PASS
-  Evidence: `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\known_well_comparison.json`
-- ID: PH2-TM-003
-  Expected: Invalid `lat/lng` returns `400`.
-  Actual: API tests confirm error handling.
-  Result: PASS
-  Evidence: `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\evidence\command-logs\test_api.txt`
-- ID: PH2-JNT-001
-  Expected: Full frontend-backend Phase 2 flow executes.
-  Actual: Partner frontend Phase 2 artifacts not in workspace.
-  Result: FAIL
-  Evidence: `C:\Users\rithi\OneDrive\Documents\Github\TapMap\reports\phase-02\you-report.md`
+## Automated Test Results
+- Backend tests:
+  - Command: `pytest -q`
+  - Result: `36 passed in 0.30s`
+  - Evidence: `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_backend_tests_final.txt`
+- Frontend build:
+  - Command: `npm run build`
+  - Result: PASS
+  - Evidence: `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_frontend_build_final.txt`
 
-## Retest Results After Fixes
-- Backend suite rerun after scoring engine and PFAS parser corrections:
-  - `pytest backend/tests -q` -> `11 passed`.
-- Final teammate baseline status: PASS.
-- Joint phase status: pending partner implementation and joint rerun.
+## Address E2E Scenarios (Executed)
+- `835 W Dayton St, Madison, WI`
+  - Mapping wells: `30, 27, 18, 19`
+  - Score: `72.0 (C)`
+  - Evidence:
+    - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/835_W_Dayton_St.png`
+- `610 Langdon St, Madison, WI`
+  - Mapping wells: `19, 30, 27, 24, 18`
+  - Score: `74.8 (C)`
+  - Evidence:
+    - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/610_Langdon_St.png`
+- `750 Hilldale Wy, Madison, WI 53705`
+  - Mapping wells: `14`
+  - Score: `32.8 (F)`
+  - Evidence:
+    - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/750_Hilldale_Wy.png`
+- `600 N Park St, Madison, WI`
+  - Mapping: Not found on city mapping tool, fallback path shown.
+  - Evidence:
+    - `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/600_N_Park_St.png`
 
+## Additional Robustness Check
+- Randomized lat/lng score calls in Madison-area bounds: `200` samples
+- Failures: `0/200`
+- Evidence: `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_address_e2e_checks.txt`
+
+## Final Test Status
+- Phase 2.1 You-scope matrix: PASS
+- Open P0/P1 defects from this execution: None

@@ -1,57 +1,76 @@
-# Integration Report - Phase 02
+# Integration Report - Phase 02.1
 
 ## Integration Freeze
-- Freeze start timestamp: March 1, 2026 12:05 AM CT
-- Freeze end timestamp: March 1, 2026 12:10 AM CT
-- Scope frozen: Phase 2 frontend baseline integration with corrected PFAS dataset and existing backend stub contracts.
+- Freeze start timestamp: March 1, 2026 02:30 AM CT
+- Freeze end timestamp: March 1, 2026 03:05 AM CT
+- Scope frozen: Phase 2.1 solo track (frontend + backend scoring + city address mapping).
 
 ## Implementation Completion Checks
-- [ ] Teammate implementation complete for this phase.
 - [x] You implementation complete for this phase.
+- [x] Integrated backend and frontend behaviors verified together.
 
 ## Integrated Components
-1. Component: Phase 2 route + map page
-Path: `/Users/sikander/Documents/TapMap/frontend/src/pages/Phase2Page.tsx`
-Verification: Manual runtime checks + screenshot evidence.
-2. Component: Leaflet map and popup integration
-Path: `/Users/sikander/Documents/TapMap/frontend/src/components/Phase2Map.tsx`
-Verification: Zone overlays and popup render validated.
-3. Component: Geocoding service integration
-Path: `/Users/sikander/Documents/TapMap/frontend/src/services/geocoding.ts`
-Verification: Address lookup and timeout/error handling verified.
-4. Component: Corrected PFAS data integration
-Path: `/Users/sikander/Documents/TapMap/frontend/src/data/pfas_well_latest.json`
-Verification: Corrected wells 9/11/14 values visible in UI.
-5. Component: Backend stub contract compatibility
-Path: `/Users/sikander/Documents/TapMap/backend/app/app.py`
-Verification: Backend tests pass against current endpoints.
+1. Component: Data-driven scoring engine + weighted well-mix scoring
+Path:
+- `/Users/sikander/Documents/TapMap/backend/app/scoring_engine.py`
+Verification:
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_backend_tests_final.txt`
+
+2. Component: City of Madison address-to-well mapping integration
+Path:
+- `/Users/sikander/Documents/TapMap/backend/app/city_mapping.py`
+- `/Users/sikander/Documents/TapMap/backend/app/app.py`
+Verification:
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_address_e2e_checks.txt`
+
+3. Component: Phase 2.1 page flow and UI panels
+Path:
+- `/Users/sikander/Documents/TapMap/frontend/src/pages/Phase2Page.tsx`
+- `/Users/sikander/Documents/TapMap/frontend/src/components/Phase2Map.tsx`
+Verification:
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/835_W_Dayton_St.png`
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/610_Langdon_St.png`
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/750_Hilldale_Wy.png`
+
+4. Component: Frontend API integration for score + address-wells
+Path:
+- `/Users/sikander/Documents/TapMap/frontend/src/services/api.ts`
+Verification:
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_frontend_build_final.txt`
 
 ## End-to-End Verification
-1. Flow: Open Phase 2 map page and render service overlays.
+1. Flow: Address search -> city mapping -> weighted score snapshot.
 Result: PASS
-Evidence path: `/Users/sikander/Documents/TapMap/reports/phase-02/frontend-phase2-map.png`
-2. Flow: Search Madison address -> geocode -> zone selection.
+Evidence:
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/835_W_Dayton_St.png`
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/610_Langdon_St.png`
+
+2. Flow: Alias handling (`Wy` -> `Way`) for valid city mapping.
 Result: PASS
-Evidence path: `/Users/sikander/Documents/TapMap/reports/phase-02/frontend-phase2-search-success.png`
-3. Flow: Click zone and inspect popup contaminant details.
+Evidence:
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/750_Hilldale_Wy.png`
+
+3. Flow: No city mapping result -> fallback behavior remains controlled.
 Result: PASS
-Evidence path: `/Users/sikander/Documents/TapMap/reports/phase-02/frontend-phase2-zone-popup.png`
-4. Flow: Trigger invalid/failed input state and confirm user-facing error.
+Evidence:
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/600_N_Park_St.png`
+
+4. Flow: Automated backend and contract suite.
+Result: PASS (`36 passed`)
+Evidence:
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_backend_tests_final.txt`
+
+5. Flow: Frontend production build.
 Result: PASS
-Evidence path: `/Users/sikander/Documents/TapMap/reports/phase-02/frontend-phase2-error-state.png`
-5. Flow: Build and backend contract smoke.
-Result: PASS
-Evidence path:
-- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/frontend_build_phase2_initial.txt`
-- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/backend_tests_phase2_initial.txt`
+Evidence:
+- `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_frontend_build_final.txt`
 
 ## Integration Risks
-1. Real backend scoring/resolver logic is still pending teammate implementation.
-2. End-to-end with real multi-contaminant backend payload not yet executed.
-3. Gate-mode completion cannot be reached until teammate duties are merged.
+1. City MyWells endpoint availability is an external dependency; runtime errors are handled with user-facing fallback states.
+2. Some addresses do not return city mapping rows; nearest-well fallback remains in place.
 
 ## Ready/Not Ready
-- Status: NOT READY
+- Status: READY
 - Notes:
-1. Frontend Phase 2 deliverables are ready.
-2. Phase-wide integration remains blocked on teammate backend/data deliverables.
+1. Phase 2.1 integrated stack is functionally complete.
+2. Address scoring now reflects mapped well distribution when available.

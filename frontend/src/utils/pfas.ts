@@ -1,6 +1,6 @@
 export function formatPfasValue(value: number | null | undefined): string {
   if (value == null || Number.isNaN(value)) {
-    return "Not reported";
+    return "Not reported / Not available";
   }
 
   if (value === 0) {
@@ -16,9 +16,7 @@ export function formatPfasStatus(status: string | null | undefined): string {
       return "Detected";
     case "not_detected":
       return "Not detected";
-    case "no_current_sample":
-      return "No current sample";
     default:
-      return "Unknown";
+      return "Not reported / Not available";
   }
 }

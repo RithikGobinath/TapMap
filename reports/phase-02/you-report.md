@@ -1,74 +1,61 @@
-# You Report - Phase 02
+# You Report - Phase 02.1
 
 ## Phase Goal
-- Deliver Phase 2 frontend duties:
-1. Leaflet map with service-area overlays.
-2. Risk color gradient and zone popups.
-3. Address geocoding -> zone match flow.
-4. Stable UI integration path for backend `/api/score` and `/api/wells`.
+- Deliver full Phase 2.1 implementation in solo track:
+1. Multi-contaminant backend scoring (real data, no stubs).
+2. Address-to-well mapping integration with city tool.
+3. Weighted address scoring based on well usage distribution.
+4. Frontend integration and stability fixes for score/mapping UX.
 
 ## Completed Work
-- Implemented Phase 2 map page and routing:
-1. Added `/phase-2` page with search, map, selected-zone panel, and legend.
-2. Added map interactions (zone click, selected zone highlight, searched-point marker).
-- Implemented geocoding and zone matching:
-1. Google geocoding integration with timeout/error handling.
-2. Point-in-polygon matching against service-area GeoJSON.
-- Implemented risk visualization:
-1. Zone color styling by PFAS risk bands.
-2. Popup contaminant details and last sample date.
-- Applied PFAS parser-audit data fix integration:
-1. Synced frontend PFAS dataset to corrected values (wells 9/11/14).
-2. Added PFAS status + historical max display.
-3. Added display semantics: `0 => Not detected`, `null => Not reported`.
-- Captured frontend evidence screenshots for map/search/error/popup behavior.
+- Implemented backend scoring upgrades:
+1. Added category-aware scoring and weighted well-mix scoring path.
+2. Added PFAS availability logic (`N/A` when not reportable) and corrected limits/guidelines wiring.
+3. Added deterministic handling for fallback/out-of-zone scoring.
+
+- Implemented city address mapping integration:
+1. Added `POST /api/address-wells` endpoint.
+2. Added parser for city mapping response (parcel, matched address, well usage rows).
+3. Added municipality inference and street-type normalization (`Wy` -> `Way`).
+
+- Implemented frontend integration:
+1. Added address mapping panel with well usage + quality-report links.
+2. Updated score flow to use weighted well mix when city mapping exists.
+3. Fixed stale snapshot/mapping state bugs after new searches and well clicks.
+4. Kept graceful no-data, no-match, and fallback UI states.
+
+- Executed deep scoring validation:
+1. Expanded backend regression suite to 36 passing tests.
+2. Added address E2E scenario checks with known Madison addresses.
+3. Verified random lat/lng robustness (`0/200` failures).
 
 ## Artifacts Produced (with absolute paths)
-1. `/Users/sikander/Documents/TapMap/frontend/src/pages/Phase2Page.tsx`
-2. `/Users/sikander/Documents/TapMap/frontend/src/components/Phase2Map.tsx`
-3. `/Users/sikander/Documents/TapMap/frontend/src/services/geocoding.ts`
-4. `/Users/sikander/Documents/TapMap/frontend/src/utils/geo.ts`
-5. `/Users/sikander/Documents/TapMap/frontend/src/utils/risk.ts`
-6. `/Users/sikander/Documents/TapMap/frontend/src/utils/pfas.ts`
-7. `/Users/sikander/Documents/TapMap/frontend/src/types/phase2.ts`
-8. `/Users/sikander/Documents/TapMap/frontend/src/data/phase2Data.ts`
-9. `/Users/sikander/Documents/TapMap/frontend/src/data/pfas_well_latest.json`
-10. `/Users/sikander/Documents/TapMap/frontend/src/data/well_service_areas.json`
-11. `/Users/sikander/Documents/TapMap/docs/phase2-checklist.md`
-12. `/Users/sikander/Documents/TapMap/reports/phase-02/frontend-phase2-map.png`
-13. `/Users/sikander/Documents/TapMap/reports/phase-02/frontend-phase2-search-success.png`
-14. `/Users/sikander/Documents/TapMap/reports/phase-02/frontend-phase2-zone-popup.png`
-15. `/Users/sikander/Documents/TapMap/reports/phase-02/frontend-phase2-error-state.png`
+1. `/Users/sikander/Documents/TapMap/backend/app/scoring_engine.py`
+2. `/Users/sikander/Documents/TapMap/backend/app/city_mapping.py`
+3. `/Users/sikander/Documents/TapMap/backend/app/app.py`
+4. `/Users/sikander/Documents/TapMap/backend/tests/test_api.py`
+5. `/Users/sikander/Documents/TapMap/backend/tests/test_scoring_engine.py`
+6. `/Users/sikander/Documents/TapMap/backend/tests/test_city_mapping.py`
+7. `/Users/sikander/Documents/TapMap/backend/tests/test_scoring_regression.py`
+8. `/Users/sikander/Documents/TapMap/frontend/src/pages/Phase2Page.tsx`
+9. `/Users/sikander/Documents/TapMap/frontend/src/components/Phase2Map.tsx`
+10. `/Users/sikander/Documents/TapMap/frontend/src/services/api.ts`
+11. `/Users/sikander/Documents/TapMap/frontend/src/types/phase2.ts`
+12. `/Users/sikander/Documents/TapMap/docs/phase2.1-checklist.md`
 
-## Data/API Validation Results
-1. Frontend production build: PASS.
-Evidence: `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/frontend_build_phase2_initial.txt`
-2. Backend API stub tests: PASS (`5 passed`).
-Evidence: `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/backend_tests_phase2_initial.txt`
-3. Phase progress validator: PASS.
-Evidence: `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_progress_validation.txt`
-4. Gate validator: expected FAIL until teammate backend implementation and full matrix completion.
-Evidence: `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_gate_validation.txt`
+## Evidence Artifacts
+- Command logs:
+1. `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_backend_tests_final.txt`
+2. `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_frontend_build_final.txt`
+3. `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/command-logs/phase2_1_address_e2e_checks.txt`
 
-## Known Issues / Risks
-1. Phase-wide gate remains blocked because teammate backend implementation is not complete.
-2. Backend endpoints in runtime remain stubs (real scoring/data resolver pending teammate duties).
-3. Some test matrix categories are not yet executed (performance/resilience/security sanity).
-4. Data-source completeness beyond corrected PFAS still depends on teammate’s multi-contaminant ingestion.
+- Screenshots:
+1. `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/835_W_Dayton_St.png`
+2. `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/610_Langdon_St.png`
+3. `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/750_Hilldale_Wy.png`
+4. `/Users/sikander/Documents/TapMap/reports/phase-02/evidence/600_N_Park_St.png`
 
-## What Is Ready For Teammate
-1. Frontend Phase 2 UX is complete and stable for integration.
-2. UI already supports corrected PFAS status fields (`pfas_status`, `historical_max_pfas_ppt`).
-3. Backend contract paths are preserved (`/api/score`, `/api/wells`, `/api/submit`).
-4. Screenshots and command-log evidence are in place for handoff.
-
-## Blocked / Needs Input
-1. Real `/api/score` scoring implementation from teammate.
-2. Real `/api/wells` full contaminant payload from teammate.
-3. Final agreed category weights and serving-well resolver behavior.
-
-## Next Phase Plan (first 30 min)
-1. Pull teammate backend branch and run integration smoke test.
-2. Validate frontend parsing against real `/api/score` and `/api/wells` payloads.
-3. Capture retest evidence and update Phase 2 test matrix.
-4. Resolve any contract mismatches and finalize handoff decision.
+## Status Summary
+- You-scope implementation: COMPLETE
+- Test matrix categories: PASS
+- Open P0/P1 defects: NONE

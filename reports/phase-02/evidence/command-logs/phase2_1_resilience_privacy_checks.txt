@@ -1,0 +1,7 @@
+out_of_zone_status 200
+out_of_zone_flag True
+out_of_zone_well_count 1
+invalid_payload_status 400
+normal_status 200
+contains_address_field False
+contains_user_input_field False
