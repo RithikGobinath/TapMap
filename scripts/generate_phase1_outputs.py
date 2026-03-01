@@ -109,14 +109,17 @@ def _parse_updated_date(text: str) -> str:
 
 
 def _parse_total_pfas(text: str) -> float | None:
-    # Examples: "estimated total PFAS level is 7.3 ng/L"
-    m = re.search(
-        r"total\s+PFAS\s+level\s+is\s+([0-9]+(?:\.[0-9]+)?)",
-        text,
-        flags=re.IGNORECASE,
-    )
-    if m:
-        return float(m.group(1))
+    # Common phrasing patterns seen across Madison well reports.
+    patterns = [
+        r"estimated\s+total\s+PFAS\s+level\s+is\s+([0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?)",
+        r"total\s+PFAS\s+level\s+is\s+([0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?)",
+        r"combined\s+PFAS\s+level\s+is\s+estimated\s+at\s+([0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?)",
+        r"level\s+of\s+this\s+PFAS\s+was\s+([0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?)",
+    ]
+    for pattern in patterns:
+        m = re.search(pattern, text, flags=re.IGNORECASE)
+        if m:
+            return float(m.group(1).replace(",", ""))
     if re.search(r"\bno\s+PFAS\b", text, flags=re.IGNORECASE):
         return 0.0
     return None
@@ -125,16 +128,44 @@ def _parse_total_pfas(text: str) -> float | None:
 def _parse_detected_analytes(text: str) -> list[str]:
     # Typical phrase: "One PFAS [PFHxS] was found ..."
     m = re.search(r"PFAS\s*\[([^\]]+)\]", text, flags=re.IGNORECASE)
+    if m:
+        raw = m.group(1)
+        parts = re.split(r",|\band\b|&|/", raw, flags=re.IGNORECASE)
+        out = []
+        for p in parts:
+            token = re.sub(r"[^A-Za-z0-9]", "", p).upper()
+            if token:
+                out.append(token)
+        return out
+
+    # Alternate phrasing: "PFBA accounted for 100% of the PFAS detected."
+    m2 = re.search(r"\b(PF[A-Z0-9]{2,10})\b\s+accounted\s+for\s+100%\s+of\s+the\s+PFAS", text, flags=re.IGNORECASE)
+    if m2:
+        return [m2.group(1).upper()]
+    return []
+
+
+def _parse_historical_max_pfas(text: str) -> float | None:
+    m = re.search(
+        r"max(?:imum)?\s+combined\s+PFAS\s+level\s+observed.{0,80}?was\s+([0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?)",
+        text,
+        flags=re.IGNORECASE,
+    )
     if not m:
-        return []
-    raw = m.group(1)
-    parts = re.split(r",| and ", raw)
-    out = []
-    for p in parts:
-        token = p.strip().upper()
-        if token:
-            out.append(token)
-    return out
+        return None
+    return float(m.group(1).replace(",", ""))
+
+
+def _infer_pfas_status(text: str, total_pfas: float | None) -> str:
+    if total_pfas is not None and total_pfas > 0:
+        return "detected"
+    if total_pfas == 0:
+        return "not_detected"
+    if re.search(r"did\s+not\s+collect\s+routine\s+or\s+annual\s+samples", text, flags=re.IGNORECASE):
+        return "no_current_sample"
+    if re.search(r"out\s+of\s+service", text, flags=re.IGNORECASE):
+        return "no_current_sample"
+    return "unknown"
 
 
 def build_pfas_rows(wells: list[WellRow]) -> list[dict[str, object]]:
@@ -146,6 +177,8 @@ def build_pfas_rows(wells: list[WellRow]) -> list[dict[str, object]]:
         sample_date = _parse_updated_date(text)
         total_pfas = _parse_total_pfas(text)
         analytes = _parse_detected_analytes(text)
+        historical_max = _parse_historical_max_pfas(text)
+        pfas_status = _infer_pfas_status(text, total_pfas)
 
         pfoa = None
         pfos = None
@@ -158,7 +191,7 @@ def build_pfas_rows(wells: list[WellRow]) -> list[dict[str, object]]:
                 pfoa = total_pfas
             elif a == "PFOS":
                 pfos = total_pfas
-            elif a in {"PFHXS", "PFHXS"}:
+            elif a == "PFHXS":
                 pfhxs = total_pfas
 
         rows.append(
@@ -169,6 +202,8 @@ def build_pfas_rows(wells: list[WellRow]) -> list[dict[str, object]]:
                 "pfos_ppt": pfos,
                 "pfhxs_ppt": pfhxs,
                 "total_pfas_ppt": total_pfas,
+                "historical_max_pfas_ppt": historical_max,
+                "pfas_status": pfas_status,
                 "source_url": w.report_url,
             }
         )
