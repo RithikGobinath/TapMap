@@ -1,0 +1,7 @@
+# latency checks
+## GET /health
+http_code=200 time_total=0.006760
+## GET /api/wells
+http_code=200 time_total=0.006537
+## POST /api/score
+http_code=200 time_total=0.001249

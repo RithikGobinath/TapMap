@@ -1,0 +1,23 @@
+{
+  "breakdown": {
+    "infrastructure": 3,
+    "lead": 6.0,
+    "nitrate": 3.2,
+    "pfas": 4.5,
+    "violations": 2,
+    "voc": 1.1
+  },
+  "grade": "C",
+  "lastUpdated": "2026-02-28",
+  "limits": {
+    "lead": 15,
+    "nitrate": 10,
+    "pfas": 9,
+    "voc": 5
+  },
+  "score": 75,
+  "wellIds": [
+    "WELL-STUB"
+  ],
+  "zoneId": "zone-stub"
+}

@@ -1,0 +1,18 @@
+{
+  "wells": [
+    {
+      "contaminants": {
+        "lead": 6.0,
+        "nitrate": 3.2,
+        "pfas": 4.5,
+        "voc": 1.1
+      },
+      "id": "WELL-STUB",
+      "lat": 43.0731,
+      "latestTestDate": "2026-02-28",
+      "lng": -89.4012,
+      "name": "Stub Well",
+      "riskLevel": 65
+    }
+  ]
+}

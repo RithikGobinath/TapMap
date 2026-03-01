@@ -1,0 +1,19 @@
+# config
+Project 'tapmap-cheesehacks-2026' lacks an 'environment' tag. Please create or add a tag with key 'environment' and a value like 'Production', 'Development', 'Test', or 'Staging'. Add an 'environment' tag using `gcloud resource-manager tags bindings create`. See https://cloud.google.com/resource-manager/docs/creating-managing-projects#designate_project_environments_with_tags for details.
+account: sikanderphogat18@gmail.com
+project: tapmap-cheesehacks-2026
+
+# billing
+billingAccountName: billingAccounts/01378C-31C33D-DBBA93
+billingEnabled: true
+projectId: tapmap-cheesehacks-2026
+
+# firestore
+NAME                                                  LOCATION_ID  TYPE              CREATE_TIME
+projects/tapmap-cheesehacks-2026/databases/(default)  us-central1  FIRESTORE_NATIVE  2026-03-01T00:22:26.146906Z
+
+# enabled services subset
+18:firestore.googleapis.com
+19:geocoding-backend.googleapis.com
+21:maps-backend.googleapis.com
+24:run.googleapis.com

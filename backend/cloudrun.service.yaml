@@ -1,0 +1,14 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: tapmap-backend
+spec:
+  template:
+    spec:
+      containers:
+        - image: gcr.io/tapmap-cheesehacks-2026/tapmap-backend
+          env:
+            - name: FLASK_ENV
+              value: production
+          ports:
+            - containerPort: 8080

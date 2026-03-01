@@ -1,0 +1,10 @@
+total 440
+drwxr-xr-x@  9 sikander  staff     288 Feb 28 16:59 .
+drwxr-xr-x@ 16 sikander  staff     512 Feb 28 19:38 ..
+-rw-r--r--@  1 sikander  staff    1304 Feb 28 16:57 filter.py
+-rw-r--r--@  1 sikander  staff    4020 Feb 28 16:57 madison_facilities.csv
+-rw-r--r--@  1 sikander  staff    1264 Feb 28 16:57 madison_lead_samples.csv
+-rw-r--r--@  1 sikander  staff  125792 Feb 28 16:57 madison_ref_codes.csv
+-rw-r--r--@  1 sikander  staff    3118 Feb 28 16:57 madison_summary.json
+-rw-r--r--@  1 sikander  staff   75622 Feb 28 16:57 madison_violations.csv
+-rw-r--r--@  1 sikander  staff    1104 Feb 28 16:57 madison_water_systems.csv

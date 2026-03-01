@@ -1,0 +1,27 @@
+# resilience checks
+## malformed json
+HTTP/1.1 400 BAD REQUEST
+Server: Werkzeug/3.1.6 Python/3.11.4
+Date: Sun, 01 Mar 2026 01:39:16 GMT
+Content-Type: application/json
+Content-Length: 53
+Access-Control-Allow-Origin: *
+Connection: close
+
+{
+  "message": "lat and lng are required numbers."
+}
+
+## wrong content-type
+HTTP/1.1 400 BAD REQUEST
+Server: Werkzeug/3.1.6 Python/3.11.4
+Date: Sun, 01 Mar 2026 01:39:16 GMT
+Content-Type: application/json
+Content-Length: 80
+Access-Control-Allow-Origin: *
+Connection: close
+
+{
+  "message": "Missing fields: lat, lng, contaminant, value, unit, testDate"
+}
+

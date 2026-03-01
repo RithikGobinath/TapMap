@@ -1,0 +1,115 @@
+# /health
+HTTP/1.1 200 OK
+Server: Werkzeug/3.1.6 Python/3.11.4
+Date: Sun, 01 Mar 2026 01:38:38 GMT
+Content-Type: application/json
+Content-Length: 17
+Access-Control-Allow-Origin: *
+Connection: close
+
+{
+  "ok": true
+}
+
+# /api/wells
+HTTP/1.1 200 OK
+Server: Werkzeug/3.1.6 Python/3.11.4
+Date: Sun, 01 Mar 2026 01:38:38 GMT
+Content-Type: application/json
+Content-Length: 308
+Access-Control-Allow-Origin: *
+Connection: close
+
+{
+  "wells": [
+    {
+      "contaminants": {
+        "lead": 6.0,
+        "nitrate": 3.2,
+        "pfas": 4.5,
+        "voc": 1.1
+      },
+      "id": "WELL-STUB",
+      "lat": 43.0731,
+      "latestTestDate": "2026-02-28",
+      "lng": -89.4012,
+      "name": "Stub Well",
+      "riskLevel": 65
+    }
+  ]
+}
+
+# /api/score valid
+HTTP/1.1 200 OK
+Server: Werkzeug/3.1.6 Python/3.11.4
+Date: Sun, 01 Mar 2026 01:38:38 GMT
+Content-Type: application/json
+Content-Length: 345
+Access-Control-Allow-Origin: *
+Connection: close
+
+{
+  "breakdown": {
+    "infrastructure": 3,
+    "lead": 6.0,
+    "nitrate": 3.2,
+    "pfas": 4.5,
+    "violations": 2,
+    "voc": 1.1
+  },
+  "grade": "C",
+  "lastUpdated": "2026-02-28",
+  "limits": {
+    "lead": 15,
+    "nitrate": 10,
+    "pfas": 9,
+    "voc": 5
+  },
+  "score": 75,
+  "wellIds": [
+    "WELL-STUB"
+  ],
+  "zoneId": "zone-stub"
+}
+
+# /api/score invalid
+HTTP/1.1 400 BAD REQUEST
+Server: Werkzeug/3.1.6 Python/3.11.4
+Date: Sun, 01 Mar 2026 01:38:38 GMT
+Content-Type: application/json
+Content-Length: 53
+Access-Control-Allow-Origin: *
+Connection: close
+
+{
+  "message": "lat and lng are required numbers."
+}
+
+# /api/submit valid
+HTTP/1.1 201 CREATED
+Server: Werkzeug/3.1.6 Python/3.11.4
+Date: Sun, 01 Mar 2026 01:38:38 GMT
+Content-Type: application/json
+Content-Length: 80
+Access-Control-Allow-Origin: *
+Connection: close
+
+{
+  "geohash": "stubgh6",
+  "stored": true,
+  "submissionId": "stub-e73d8b44"
+}
+
+# /api/submit invalid
+HTTP/1.1 400 BAD REQUEST
+Server: Werkzeug/3.1.6 Python/3.11.4
+Date: Sun, 01 Mar 2026 01:38:38 GMT
+Content-Type: application/json
+Content-Length: 70
+Access-Control-Allow-Origin: *
+Connection: close
+
+{
+  "message": "Missing fields: contaminant, value, unit, testDate"
+}
+

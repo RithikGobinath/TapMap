@@ -1,0 +1,10 @@
+# privacy and security sanity
+## submit response should not include raw lat/lng
+{
+  "geohash": "stubgh6",
+  "stored": true,
+  "submissionId": "stub-bffdb771"
+}
+
+## key presence check (masked)
+frontend/.env key length=39
