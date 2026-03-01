@@ -1,0 +1,8 @@
+Validation failed for phase 02 (gate mode).
+ERROR: integration-report.md: teammate completion checkbox not checked.
+ERROR: test-report.md: teammate pre-test completion checkbox not checked.
+ERROR: test-report.md: 'Performance spot checks' must be PASS for gate mode.
+ERROR: test-report.md: 'Resilience tests' must be PASS for gate mode.
+ERROR: test-report.md: 'Privacy/security sanity tests' must be PASS for gate mode.
+ERROR: handoff-decision.md: Decision must be GO in gate mode.
+WARN: handoff-decision.md: fill P2 risk acceptance details when applicable.
