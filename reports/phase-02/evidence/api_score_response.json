@@ -1,0 +1,24 @@
+{
+  "breakdown": {
+    "infrastructure": 5.12,
+    "lead": 3.645,
+    "nitrate": 0.6,
+    "pfas": 7.3,
+    "violations": 0,
+    "voc": 0.2
+  },
+  "grade": "B",
+  "lastUpdated": "2025-03-24",
+  "limits": {
+    "lead": 15.0,
+    "nitrate": 10.0,
+    "pfas": 9.0,
+    "voc": 5.0
+  },
+  "outOfZone": false,
+  "score": 80.0,
+  "wellIds": [
+    "6"
+  ],
+  "zoneId": "6"
+}

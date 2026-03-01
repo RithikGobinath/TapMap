@@ -1,0 +1,16 @@
+{
+  "well_15": {
+    "id": "15",
+    "score": 60.8,
+    "grade": "D",
+    "riskLevel": 39
+  },
+  "well_7": {
+    "id": "7",
+    "score": 96.8,
+    "grade": "A",
+    "riskLevel": 3
+  },
+  "assertion": "well_15_score_is_lower_than_well_7",
+  "result": true
+}

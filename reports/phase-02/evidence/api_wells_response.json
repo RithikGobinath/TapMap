@@ -1,0 +1,400 @@
+{
+  "wells": [
+    {
+      "contaminants": {
+        "lead": 3.645,
+        "nitrate": 0.6,
+        "pfas": 7.3,
+        "voc": 0.2
+      },
+      "grade": "B",
+      "id": "6",
+      "lat": 43.073862,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.437359,
+      "name": "Well 6",
+      "riskLevel": 20,
+      "score": 80.0,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 1.8,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "7",
+      "lat": 43.118494,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.364812,
+      "name": "Well 7",
+      "riskLevel": 3,
+      "score": 96.8,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 1.8,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "8",
+      "lat": 43.091038,
+      "latestTestDate": "2024-04-12",
+      "lng": -89.339805,
+      "name": "Well 8",
+      "riskLevel": 3,
+      "score": 96.8,
+      "status": "inactive",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 4.5,
+        "nitrate": 10.0,
+        "pfas": 11.7,
+        "voc": 5.0
+      },
+      "grade": "F",
+      "id": "9",
+      "lat": 43.071869,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.316979,
+      "name": "Well 9",
+      "riskLevel": 61,
+      "score": 39.0,
+      "status": "active",
+      "violationCount": 168
+    },
+    {
+      "contaminants": {
+        "lead": 1.8,
+        "nitrate": 0.6,
+        "pfas": 11.7,
+        "voc": 0.2
+      },
+      "grade": "D",
+      "id": "11",
+      "lat": 43.095809,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.318061,
+      "name": "Well 11",
+      "riskLevel": 39,
+      "score": 60.8,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 2.7,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "12",
+      "lat": 43.046795,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.475565,
+      "name": "Well 12",
+      "riskLevel": 5,
+      "score": 95.2,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 1.8,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "13",
+      "lat": 43.148128,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.376947,
+      "name": "Well 13",
+      "riskLevel": 3,
+      "score": 96.8,
+      "status": "inactive",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 2.745,
+        "nitrate": 0.6,
+        "pfas": 11.7,
+        "voc": 0.2
+      },
+      "grade": "F",
+      "id": "14",
+      "lat": 43.078037,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.471171,
+      "name": "Well 14",
+      "riskLevel": 41,
+      "score": 59.1,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 1.8,
+        "nitrate": 0.6,
+        "pfas": 11.7,
+        "voc": 0.2
+      },
+      "grade": "D",
+      "id": "15",
+      "lat": 43.121715,
+      "latestTestDate": "2024-04-12",
+      "lng": -89.320739,
+      "name": "Well 15",
+      "riskLevel": 39,
+      "score": 60.8,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 2.475,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "16",
+      "lat": 43.061153,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.499598,
+      "name": "Well 16",
+      "riskLevel": 4,
+      "score": 95.7,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 1.8,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "17",
+      "lat": 43.07525,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.378618,
+      "name": "Well 17",
+      "riskLevel": 3,
+      "score": 96.8,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 6.098,
+        "nitrate": 8.825,
+        "pfas": 0.0,
+        "voc": 4.4
+      },
+      "grade": "C",
+      "id": "18",
+      "lat": 43.044865,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.395223,
+      "name": "Well 18",
+      "riskLevel": 27,
+      "score": 72.7,
+      "status": "active",
+      "violationCount": 147
+    },
+    {
+      "contaminants": {
+        "lead": 3.915,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "19",
+      "lat": 43.089362,
+      "latestTestDate": "2025-03-24",
+      "lng": -89.434691,
+      "name": "Well 19",
+      "riskLevel": 9,
+      "score": 91.1,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 2.745,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "20",
+      "lat": 43.021169,
+      "latestTestDate": "2025-03-25",
+      "lng": -89.489829,
+      "name": "Well 20",
+      "riskLevel": 5,
+      "score": 95.1,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 1.8,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "24",
+      "lat": 43.082829,
+      "latestTestDate": "2025-03-25",
+      "lng": -89.377031,
+      "name": "Well 24",
+      "riskLevel": 3,
+      "score": 96.8,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 1.8,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "25",
+      "lat": 43.08756,
+      "latestTestDate": "2025-03-25",
+      "lng": -89.28799,
+      "name": "Well 25",
+      "riskLevel": 3,
+      "score": 96.8,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 2.655,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "26",
+      "lat": 43.04571,
+      "latestTestDate": "2025-03-25",
+      "lng": -89.519927,
+      "name": "Well 26",
+      "riskLevel": 5,
+      "score": 95.3,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 4.275,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "B",
+      "id": "27",
+      "lat": 43.068484,
+      "latestTestDate": "2025-03-25",
+      "lng": -89.41085,
+      "name": "Well 27",
+      "riskLevel": 10,
+      "score": 89.9,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 2.52,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "28",
+      "lat": 43.075319,
+      "latestTestDate": "2025-03-25",
+      "lng": -89.527822,
+      "name": "Well 28",
+      "riskLevel": 4,
+      "score": 95.6,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 1.8,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "29",
+      "lat": 43.109836,
+      "latestTestDate": "2025-03-25",
+      "lng": -89.297327,
+      "name": "Well 29",
+      "riskLevel": 3,
+      "score": 96.8,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 3.555,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "30",
+      "lat": 43.032775,
+      "latestTestDate": "2025-03-25",
+      "lng": -89.366825,
+      "name": "Well 30",
+      "riskLevel": 8,
+      "score": 92.4,
+      "status": "active",
+      "violationCount": 0
+    },
+    {
+      "contaminants": {
+        "lead": 3.6,
+        "nitrate": 0.6,
+        "pfas": 0.0,
+        "voc": 0.2
+      },
+      "grade": "A",
+      "id": "31",
+      "lat": 43.045223,
+      "latestTestDate": "2025-03-25",
+      "lng": -89.29838,
+      "name": "Well 31",
+      "riskLevel": 8,
+      "score": 92.2,
+      "status": "active",
+      "violationCount": 0
+    }
+  ]
+}
