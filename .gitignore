@@ -19,3 +19,10 @@ backend/.env
 
 # OS
 .DS_Store
+
+# Large SDWA raw extracts
+data/SDWA_FACILITIES.csv
+data/SDWA_LCR_SAMPLES.csv
+data/SDWA_PUB_WATER_SYSTEMS.csv
+data/SDWA_REF_CODE_VALUES.csv
+data/SDWA_VIOLATIONS_ENFORCEMENT.csv

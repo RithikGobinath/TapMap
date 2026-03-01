@@ -1,0 +1,200 @@
+[
+  {
+    "well_id": 6,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": 7.3,
+    "total_pfas_ppt": 7.3,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well06QualityReport.pdf"
+  },
+  {
+    "well_id": 7,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well07QualityReport.pdf"
+  },
+  {
+    "well_id": 8,
+    "sample_date": "2024-04-12",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well08QualityReport.pdf"
+  },
+  {
+    "well_id": 9,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": NaN,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well09QualityReport.pdf"
+  },
+  {
+    "well_id": 11,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": NaN,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well11QualityReport.pdf"
+  },
+  {
+    "well_id": 12,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well12QualityReport.pdf"
+  },
+  {
+    "well_id": 13,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well13QualityReport.pdf"
+  },
+  {
+    "well_id": 14,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": NaN,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well14QualityReport.pdf"
+  },
+  {
+    "well_id": 15,
+    "sample_date": "2024-04-12",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": NaN,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well15QualityReport.pdf"
+  },
+  {
+    "well_id": 16,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well16QualityReport.pdf"
+  },
+  {
+    "well_id": 17,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well17QualityReport.pdf"
+  },
+  {
+    "well_id": 18,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well18QualityReport.pdf"
+  },
+  {
+    "well_id": 19,
+    "sample_date": "2025-03-24",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well19QualityReport.pdf"
+  },
+  {
+    "well_id": 20,
+    "sample_date": "2025-03-25",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well20QualityReport.pdf"
+  },
+  {
+    "well_id": 24,
+    "sample_date": "2025-03-25",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well24QualityReport.pdf"
+  },
+  {
+    "well_id": 25,
+    "sample_date": "2025-03-25",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well25QualityReport.pdf"
+  },
+  {
+    "well_id": 26,
+    "sample_date": "2025-03-25",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well26QualityReport.pdf"
+  },
+  {
+    "well_id": 27,
+    "sample_date": "2025-03-25",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well27QualityReport.pdf"
+  },
+  {
+    "well_id": 28,
+    "sample_date": "2025-03-25",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well28QualityReport.pdf"
+  },
+  {
+    "well_id": 29,
+    "sample_date": "2025-03-25",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well29QualityReport.pdf"
+  },
+  {
+    "well_id": 30,
+    "sample_date": "2025-03-25",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well30QualityReport.pdf"
+  },
+  {
+    "well_id": 31,
+    "sample_date": "2025-03-25",
+    "pfoa_ppt": NaN,
+    "pfos_ppt": NaN,
+    "pfhxs_ppt": NaN,
+    "total_pfas_ppt": 0.0,
+    "source_url": "https://www.cityofmadison.com/water/documents/water-quality/Well31QualityReport.pdf"
+  }
+]
