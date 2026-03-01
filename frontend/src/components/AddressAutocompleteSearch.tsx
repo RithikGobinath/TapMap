@@ -27,8 +27,20 @@ export function AddressAutocompleteSearch({
   const [lookupLoading, setLookupLoading] = useState(false);
   const [lookupError, setLookupError] = useState<string | null>(null);
   const lookupRef = useRef(0);
+  const suppressLookupRef = useRef(false);
 
   useEffect(() => {
+    if (disabled || isSubmitting) {
+      setIsOpen(false);
+      setLookupLoading(false);
+      return;
+    }
+
+    if (suppressLookupRef.current) {
+      suppressLookupRef.current = false;
+      return;
+    }
+
     const query = value.trim();
     if (query.length < 2) {
       setSuggestions([]);
@@ -68,12 +80,17 @@ export function AddressAutocompleteSearch({
       window.clearTimeout(timer);
       controller.abort();
     };
-  }, [value]);
+  }, [value, disabled, isSubmitting]);
 
-  function selectSuggestion(item: AddressSuggestion): void {
+  async function selectSuggestion(item: AddressSuggestion): Promise<void> {
+    if (disabled || isSubmitting) return;
+    suppressLookupRef.current = true;
     onValueChange(item.description);
     setIsOpen(false);
+    setSuggestions([]);
     setActiveIndex(-1);
+    setLookupError(null);
+    await onSubmit(item.description);
   }
 
   async function handleFormSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
@@ -149,7 +166,7 @@ export function AddressAutocompleteSearch({
                           : "text-slate-200 hover:bg-slate-800/80"
                     }`}
                     onMouseDown={(event) => event.preventDefault()}
-                    onClick={() => selectSuggestion(suggestion)}
+                    onClick={() => void selectSuggestion(suggestion)}
                   >
                     {suggestion.description}
                   </button>

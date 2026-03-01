@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import type { ContaminantBarDatum } from "../types/phase2";
+import type { CategoryKey, ContaminantBarDatum } from "../types/phase2";
 
 interface ContaminantBarChartProps {
   loading: boolean;
@@ -17,15 +17,57 @@ interface ContaminantBarChartProps {
   theme?: "dark" | "light";
 }
 
+interface LegalReferenceMeta {
+  hasFederalMcl: boolean;
+  legalReferenceLabel: string;
+}
+
 interface RadarRow extends ContaminantBarDatum {
   axisLabel: string;
   ewgPercent: number | null;
   legalPercent: number | null;
+  federalLegalPercent: number | null;
   primaryPercent: number;
   cappedPrimaryPercent: number;
   cappedLegalPercent: number;
+  cappedFederalLegalPercent: number | null;
   boundaryPercent: number;
+  hasFederalMcl: boolean;
+  legalReferenceLabel: string;
 }
+
+const RADAR_CAP_PERCENT = 250;
+
+const LEGAL_REFERENCE_BY_KEY: Record<CategoryKey, LegalReferenceMeta> = {
+  pfas: {
+    hasFederalMcl: false,
+    legalReferenceLabel: "PFAS total has no single federal MCL (compound-specific limits vary).",
+  },
+  nitrate: {
+    hasFederalMcl: true,
+    legalReferenceLabel: "Federal nitrate MCL.",
+  },
+  chromium6: {
+    hasFederalMcl: false,
+    legalReferenceLabel: "Hexavalent chromium has no federal MCL (EWG/CA health goal context).",
+  },
+  radionuclides: {
+    hasFederalMcl: true,
+    legalReferenceLabel: "Federal MCL for combined radium (226+228).",
+  },
+  sodiumChloride: {
+    hasFederalMcl: false,
+    legalReferenceLabel: "Sodium uses EPA advisory guidance (not enforceable).",
+  },
+  violations: {
+    hasFederalMcl: false,
+    legalReferenceLabel: "Operational trend indicator (not a contaminant MCL).",
+  },
+  voc: {
+    hasFederalMcl: true,
+    legalReferenceLabel: "Federal VOC MCL reference (category aggregate).",
+  },
+};
 
 function toAxisLabel(label: string): string {
   if (label === "Sodium/Chloride") return "Sodium/Cl";
@@ -52,6 +94,56 @@ function metricHelpText(key: ContaminantBarDatum["key"]): string {
   }
 }
 
+function formatMeasurementValue(value: number): string {
+  const abs = Math.abs(value);
+  if (abs >= 10) {
+    return Math.round(value).toLocaleString();
+  }
+  if (abs >= 1) {
+    return value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  }
+  return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatReferenceValue(value: number): string {
+  const abs = Math.abs(value);
+  if (abs >= 10) {
+    return value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+  if (abs >= 1) {
+    return value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  }
+  if (abs >= 0.1) {
+    return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  if (abs >= 0.01) {
+    return value.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+  }
+  return value.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+}
+
+function formatExactPercent(value: number | null | undefined): string {
+  if (value == null || Number.isNaN(value)) return "N/A";
+  return `${value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+}
+
+function formatDisplayPercent(value: number | null | undefined): string {
+  if (value == null || Number.isNaN(value)) return "N/A";
+  if (value > 1000) return ">1,000%";
+  if (value > 100) {
+    return `${Math.round(value).toLocaleString()}%`;
+  }
+  return `${value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+}
+
+function ValueWithUnit({ value, unit }: { value: number; unit: string }): JSX.Element {
+  return (
+    <span className="whitespace-nowrap">
+      {formatMeasurementValue(value)} {unit}
+    </span>
+  );
+}
+
 function CustomTooltip({
   active,
   payload,
@@ -72,11 +164,24 @@ function CustomTooltip({
       }`}
     >
       <p className={`font-semibold ${isLight ? "text-slate-900" : "text-white"}`}>{row.label}</p>
-      <p>Measured: {row.measured.toFixed(3)} {row.unit}</p>
-      <p>EWG guideline: {row.ewgGuideline == null ? "N/A" : `${row.ewgGuideline.toFixed(3)} ${row.unit}`}</p>
-      <p>Legal limit: {row.legalLimit == null ? "N/A" : `${row.legalLimit.toFixed(3)} ${row.unit}`}</p>
-      <p>Of EWG guideline: {row.ewgPercent == null ? "N/A" : `${row.ewgPercent.toFixed(1)}%`}</p>
-      <p>Of legal limit: {row.legalPercent == null ? "N/A" : `${row.legalPercent.toFixed(1)}%`}</p>
+      <p>Measured: {formatMeasurementValue(row.measured)} {row.unit}</p>
+      {row.secondaryMeasured != null && row.secondaryLabel ? (
+        <p>
+          {row.secondaryLabel}: {formatMeasurementValue(row.secondaryMeasured)} {row.secondaryUnit ?? row.unit}
+        </p>
+      ) : null}
+      <p>
+        EWG guideline: {row.ewgGuideline == null ? "N/A" : `${formatReferenceValue(row.ewgGuideline)} ${row.unit}`}
+      </p>
+      <p>
+        Legal limit: {row.legalLimit == null ? "N/A" : `${formatReferenceValue(row.legalLimit)} ${row.unit}`}
+      </p>
+      <p>Of EWG guideline: {formatDisplayPercent(row.ewgPercent)} (actual {formatExactPercent(row.ewgPercent)})</p>
+      <p>Of legal limit: {formatDisplayPercent(row.legalPercent)} (actual {formatExactPercent(row.legalPercent)})</p>
+      {!row.hasFederalMcl ? <p>Legal note: {row.legalReferenceLabel}</p> : null}
+      {row.primaryPercent > RADAR_CAP_PERCENT ? (
+        <p>Chart cap: plotted at {RADAR_CAP_PERCENT}% for readability.</p>
+      ) : null}
     </div>
   );
 }
@@ -147,6 +252,7 @@ export function ContaminantBarChart({
   const radarData = useMemo<RadarRow[]>(() => {
     return data
       .map((row) => {
+        const legalMeta = LEGAL_REFERENCE_BY_KEY[row.key];
         const ewgPercent = row.ewgGuideline != null && row.ewgGuideline > 0
           ? (row.measured / row.ewgGuideline) * 100
           : null;
@@ -154,15 +260,22 @@ export function ContaminantBarChart({
           ? (row.measured / row.legalLimit) * 100
           : null;
         const primaryPercent = ewgPercent ?? legalPercent ?? 0;
+        const federalLegalPercent = legalMeta.hasFederalMcl ? legalPercent : null;
+
         return {
           ...row,
           axisLabel: toAxisLabel(row.label),
           ewgPercent,
           legalPercent,
+          federalLegalPercent,
           primaryPercent,
-          cappedPrimaryPercent: Math.min(primaryPercent, 250),
-          cappedLegalPercent: Math.min(legalPercent ?? primaryPercent, 250),
-          boundaryPercent: 100
+          cappedPrimaryPercent: Math.min(primaryPercent, RADAR_CAP_PERCENT),
+          cappedLegalPercent: Math.min(legalPercent ?? primaryPercent, RADAR_CAP_PERCENT),
+          cappedFederalLegalPercent:
+            federalLegalPercent == null ? null : Math.min(federalLegalPercent, RADAR_CAP_PERCENT),
+          boundaryPercent: 100,
+          hasFederalMcl: legalMeta.hasFederalMcl,
+          legalReferenceLabel: legalMeta.legalReferenceLabel,
         };
       })
       .filter((row) => row.ewgPercent != null || row.legalPercent != null)
@@ -178,7 +291,7 @@ export function ContaminantBarChart({
         .map((row) => ({
           ...row,
           primaryPercent: row.legalPercent ?? 0,
-          cappedPrimaryPercent: Math.min(row.legalPercent ?? 0, 250)
+          cappedPrimaryPercent: Math.min(row.legalPercent ?? 0, RADAR_CAP_PERCENT)
         }));
     }
     return radarData
@@ -186,9 +299,16 @@ export function ContaminantBarChart({
       .map((row) => ({
         ...row,
         primaryPercent: row.ewgPercent ?? 0,
-        cappedPrimaryPercent: Math.min(row.ewgPercent ?? 0, 250)
+        cappedPrimaryPercent: Math.min(row.ewgPercent ?? 0, RADAR_CAP_PERCENT)
       }));
   }, [radarData, useLegalFallback]);
+
+  const cappedLabels = useMemo(
+    () => effectiveRadarData.filter((row) => row.primaryPercent > RADAR_CAP_PERCENT).map((row) => row.label),
+    [effectiveRadarData]
+  );
+  const showFederalLegalOverlay =
+    showLegalOverlay && !useLegalFallback && effectiveRadarData.some((row) => row.cappedFederalLegalPercent != null);
 
   return (
     <section className={palette.section}>
@@ -237,7 +357,7 @@ export function ContaminantBarChart({
           <span className={`h-2.5 w-4 rounded-sm border ${palette.fillLegend}`} />
           Filled risk area
         </span>
-        {showLegalOverlay && !useLegalFallback ? (
+        {showFederalLegalOverlay ? (
           <span className="inline-flex items-center gap-1.5">
             <span className={`h-0 w-7 border-t-2 border-dashed ${palette.legalLine}`} />
             Legal limit line
@@ -253,7 +373,7 @@ export function ContaminantBarChart({
         <div className="mt-2 h-72 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart
-              key={`radar-${showLegalOverlay ? "legal-on" : "legal-off"}-${useLegalFallback ? "legal" : "ewg"}`}
+              key={`radar-${showFederalLegalOverlay ? "legal-on" : "legal-off"}-${useLegalFallback ? "legal" : "ewg"}`}
               cx="52%"
               cy="50%"
               outerRadius="67%"
@@ -263,7 +383,7 @@ export function ContaminantBarChart({
               <PolarAngleAxis dataKey="axisLabel" tick={{ fill: palette.chartAngleTick, fontSize: 11 }} />
               <PolarRadiusAxis
                 angle={30}
-                domain={[0, 250]}
+                domain={[0, RADAR_CAP_PERCENT]}
                 tick={{ fill: palette.chartRadiusTick, fontSize: 10 }}
                 tickCount={6}
               />
@@ -284,10 +404,10 @@ export function ContaminantBarChart({
                 fillOpacity={0}
                 isAnimationActive={false}
               />
-              {showLegalOverlay && !useLegalFallback && effectiveRadarData.some((row) => row.legalPercent != null) ? (
+              {showFederalLegalOverlay ? (
                 <Radar
                   name="% of legal limit"
-                  dataKey="cappedLegalPercent"
+                  dataKey="cappedFederalLegalPercent"
                   stroke={palette.chartLegal}
                   strokeWidth={2}
                   strokeDasharray="3 3"
@@ -314,10 +434,30 @@ export function ContaminantBarChart({
         </p>
       ) : null}
 
+      {!loading && cappedLabels.length > 0 ? (
+        <p className={`mt-1 text-[11px] ${palette.textBody}`}>
+          Chart scale is capped at {RADAR_CAP_PERCENT}% for readability: {cappedLabels.join(", ")}. Exact values are shown in cards.
+        </p>
+      ) : null}
+
       {!loading && effectiveRadarData.length > 0 ? (
         <div className="mt-2 grid gap-1.5 sm:grid-cols-2">
           {effectiveRadarData.map((row) => {
-            const primaryOver = row.primaryPercent > 100;
+            const primaryPercent = useLegalFallback ? row.legalPercent : row.ewgPercent;
+            const primaryOver = (primaryPercent ?? 0) > 100;
+            const primaryTitle =
+              primaryPercent != null
+                ? `Actual: ${formatExactPercent(primaryPercent)} - measured ${formatMeasurementValue(row.measured)} ${row.unit} vs ${
+                    useLegalFallback
+                      ? "legal limit"
+                      : "EWG guideline"
+                  }`
+                : undefined;
+            const chlorideLegalPercent =
+              row.secondaryMeasured != null && row.secondaryLegalLimit != null && row.secondaryLegalLimit > 0
+                ? (row.secondaryMeasured / row.secondaryLegalLimit) * 100
+                : null;
+
             return (
               <div key={row.key} className={palette.card}>
                 <p className={`inline-flex items-center gap-1 font-semibold ${palette.cardTitle}`}>
@@ -342,10 +482,33 @@ export function ContaminantBarChart({
                   </span>
                   {row.label}
                 </p>
-                <p>
-                  Measured: {row.measured.toFixed(3)} {row.unit}
+                {row.key === "sodiumChloride" && row.secondaryMeasured != null ? (
+                  <>
+                    <p>
+                      Measured sodium: <ValueWithUnit value={row.measured} unit={row.unit} />
+                    </p>
+                    <p>
+                      Measured {row.secondaryLabel?.toLowerCase() ?? "chloride"}:{" "}
+                      <ValueWithUnit value={row.secondaryMeasured} unit={row.secondaryUnit ?? row.unit} />
+                    </p>
+                  </>
+                ) : (
+                  <p>
+                    Measured: <ValueWithUnit value={row.measured} unit={row.unit} />
+                  </p>
+                )}
+                <p className={palette.legalText}>
+                  EWG guideline:{" "}
+                  {row.ewgGuideline == null ? (
+                    "N/A"
+                  ) : (
+                    <span className="whitespace-nowrap">
+                      {formatReferenceValue(row.ewgGuideline)} {row.unit}
+                    </span>
+                  )}
                 </p>
                 <p
+                  title={primaryTitle}
                   className={
                     primaryOver
                       ? isLight
@@ -356,12 +519,27 @@ export function ContaminantBarChart({
                         : "font-semibold text-emerald-300"
                   }
                 >
-                  {(useLegalFallback ? row.legalPercent : row.ewgPercent)?.toFixed(1)}% of{" "}
-                  {useLegalFallback ? "legal limit" : "EWG guideline"} {primaryOver ? "(Over)" : "(Within)"}
+                  <span className="whitespace-nowrap">
+                    {formatDisplayPercent(primaryPercent)} of {useLegalFallback ? "legal limit" : "EWG guideline"}
+                  </span>{" "}
+                  <span className="whitespace-nowrap">{primaryOver ? "(Over)" : "(Within)"}</span>
                 </p>
                 {showLegalOverlay && !useLegalFallback ? (
+                  row.hasFederalMcl ? (
+                    <p className={palette.legalText}>
+                      Legal view:{" "}
+                      {row.legalPercent == null ? "N/A" : <span className="whitespace-nowrap">{`${formatDisplayPercent(row.legalPercent)} of MCL`}</span>}
+                    </p>
+                  ) : (
+                    <p className={palette.legalText}>
+                      Legal view: No federal limit. {row.legalReferenceLabel}
+                    </p>
+                  )
+                ) : null}
+                {showLegalOverlay && !useLegalFallback && row.key === "sodiumChloride" && chlorideLegalPercent != null ? (
                   <p className={palette.legalText}>
-                    Legal view: {row.legalPercent == null ? "N/A" : `${row.legalPercent.toFixed(1)}%`}
+                    Chloride view: {formatDisplayPercent(chlorideLegalPercent)} of{" "}
+                    <span className="whitespace-nowrap">250 mg/L</span> (secondary standard)
                   </p>
                 ) : null}
               </div>

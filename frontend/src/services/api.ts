@@ -10,14 +10,20 @@ function getApiBaseUrl(): string {
 
 async function parseJson<T>(response: Response): Promise<T> {
   if (!response.ok) {
-    let detail = "";
+    let message: string | null = null;
     try {
       const body = (await response.json()) as { message?: string };
-      if (body?.message) detail = ` ${body.message}`;
+      if (body?.message) message = body.message;
     } catch {
       // No-op: keep default message.
     }
-    throw new Error(`API request failed (${response.status}).${detail}`);
+    if (response.status === 400 && message) {
+      throw new Error(message);
+    }
+    if (message) {
+      throw new Error(`API request failed (${response.status}). ${message}`);
+    }
+    throw new Error(`API request failed (${response.status}).`);
   }
   return (await response.json()) as T;
 }

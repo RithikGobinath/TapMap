@@ -12,16 +12,15 @@ import type {
   CategoryComparison,
   CategoryKey,
   ContaminantBarDatum,
+  MultiContaminantSnapshot,
   ScoreResponse,
   WellServiceAreaFeature,
   WellSummary
 } from "../types/phase2";
 import { findZoneByPoint } from "../utils/geo";
-import { formatPfasStatus, formatPfasValue } from "../utils/pfas";
+import { formatPfasValue } from "../utils/pfas";
 import { getColorFromScore } from "../utils/risk";
-
-type ThemeMode = "dark" | "light";
-const THEME_STORAGE_KEY = "tapmap-theme-mode";
+import { useThemeMode } from "../hooks/useThemeMode";
 
 const chartCategoryOrder: CategoryKey[] = [
   "pfas",
@@ -81,7 +80,8 @@ function midpointFromRange(rangeText: string): number | null {
 
 function buildContaminantChartData(
   comparisons: Partial<Record<CategoryKey, CategoryComparison>> | undefined,
-  availableCategories: CategoryKey[]
+  availableCategories: CategoryKey[],
+  contaminants: MultiContaminantSnapshot | null | undefined
 ): { data: ContaminantBarDatum[]; missingLabels: string[] } {
   const data: ContaminantBarDatum[] = [];
   const missingLabels: string[] = [];
@@ -112,7 +112,15 @@ function buildContaminantChartData(
       unit: comparison.unit,
       measured: Number(measured.toFixed(4)),
       ewgGuideline: ewgGuideline == null ? null : Number(ewgGuideline.toFixed(4)),
-      legalLimit: legalLimit == null ? null : Number(legalLimit.toFixed(4))
+      legalLimit: legalLimit == null ? null : Number(legalLimit.toFixed(4)),
+      secondaryMeasured:
+        key === "sodiumChloride" && asNumber(contaminants?.chloride_mg_l) != null
+          ? Number((asNumber(contaminants?.chloride_mg_l) ?? 0).toFixed(4))
+          : null,
+      secondaryLabel: key === "sodiumChloride" ? "Chloride" : undefined,
+      secondaryUnit: key === "sodiumChloride" ? "mg/L" : undefined,
+      secondaryEwgGuideline: key === "sodiumChloride" ? null : undefined,
+      secondaryLegalLimit: key === "sodiumChloride" ? 250 : undefined
     });
   }
 
@@ -127,14 +135,12 @@ function buildContaminantChartData(
 }
 
 const METRIC_HELP: Record<string, string> = {
-  "PFAS status": "Detection state from the latest available sample for this well.",
   "PFAS total": "Sum of reported PFAS compounds in parts per trillion (ppt).",
   Nitrate: "Nitrate concentration in mg/L. Higher values increase risk.",
   "Chromium-6": "Hexavalent chromium concentration in ug/L.",
   Radium: "Combined radium radioactivity in pCi/L.",
   "VOC index": "Aggregate volatile-organic-compound indicator in ug/L.",
   "Safety score (lower is worse)": "Category safety score normalized to 0-100. Lower means worse water quality.",
-  "Risk index": "Unitless risk value from 0 to 1 used to rank category severity.",
   "Risk score": "Risk index shown on a 0-100 scale for easier comparison."
 };
 
@@ -176,12 +182,7 @@ function MetricLabel({
 }
 
 export function Phase3Page(): JSX.Element {
-  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
-    if (typeof window === "undefined") return "dark";
-    const saved = window.localStorage.getItem(THEME_STORAGE_KEY);
-    if (saved === "light" || saved === "dark") return saved;
-    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-  });
+  const [themeMode, setThemeMode] = useThemeMode();
   const [addressInput, setAddressInput] = useState("");
   const [resolvedAddress, setResolvedAddress] = useState<string | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -201,11 +202,6 @@ export function Phase3Page(): JSX.Element {
   const isLight = themeMode === "light";
 
   const wellsById = useMemo(() => Object.fromEntries(wells.map((well) => [well.id, well])), [wells]);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", themeMode);
-    window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
-  }, [themeMode]);
 
   useEffect(() => {
     let mounted = true;
@@ -373,10 +369,11 @@ export function Phase3Page(): JSX.Element {
   const effectiveLastUpdated = scoreResponse?.lastUpdated ?? selectedWell?.latestTestDate ?? null;
   const effectiveComparisons = scoreResponse?.comparisons ?? selectedWell?.comparisons;
   const effectiveAvailableCategories = scoreResponse?.availableCategories ?? selectedWell?.availableCategories ?? [];
+  const effectiveContaminants = scoreResponse?.contaminants ?? selectedWell?.contaminants ?? null;
   const effectiveWorstContaminant = scoreResponse?.worstContaminant ?? selectedWell?.worstContaminant ?? null;
   const chartModel = useMemo(
-    () => buildContaminantChartData(effectiveComparisons, effectiveAvailableCategories),
-    [effectiveComparisons, effectiveAvailableCategories]
+    () => buildContaminantChartData(effectiveComparisons, effectiveAvailableCategories, effectiveContaminants),
+    [effectiveComparisons, effectiveAvailableCategories, effectiveContaminants]
   );
 
   const scoreColor = getColorFromScore(effectiveScore);
@@ -418,12 +415,6 @@ export function Phase3Page(): JSX.Element {
           <p>
             <span className={`font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Area served:</span>{" "}
             {selectedFeature.properties.area_served_label ?? "Unknown"}
-          </p>
-          <p>
-            <MetricLabel label="PFAS status" isLight={isLight} />{" "}
-            {selectedWellHasPfas
-              ? formatPfasStatus(selectedWell?.contaminants.pfas_status)
-              : "Not reported / Not available"}
           </p>
           <p>
             <MetricLabel label="PFAS total" isLight={isLight} />{" "}
@@ -486,9 +477,12 @@ export function Phase3Page(): JSX.Element {
 
       <header className="pointer-events-none absolute left-0 right-0 top-0 z-[900] p-2 md:p-3">
         <div className={`pointer-events-auto ${topShellClass}`}>
-          <div>
+          <div className="flex items-center gap-2.5">
+            <img src="/tapmap-logo.svg" alt="TapMap logo" className="h-8 w-8 rounded-md" />
+            <div>
             <p className={`text-[10px] uppercase tracking-[0.2em] ${isLight ? "text-sky-700" : "text-cyan-300"}`}>TapMap Live</p>
             <h1 className={`text-sm font-semibold md:text-base ${isLight ? "text-slate-900" : "text-white"}`}>Water Risk Atlas</h1>
+            </div>
           </div>
           <nav className="flex items-center gap-1.5 text-xs font-medium">
             <button
@@ -510,11 +504,11 @@ export function Phase3Page(): JSX.Element {
             <Link className={navLinkClass} to="/">
               Map
             </Link>
-            <Link className={navLinkClass} to="/phase-2">
-              Legacy P2
+            <Link className={navLinkClass} to="/metrics">
+              Metrics
             </Link>
-            <Link className={navLinkClass} to="/status">
-              Status
+            <Link className={navLinkClass} to="/scoring">
+              Scoring
             </Link>
           </nav>
         </div>
@@ -616,14 +610,6 @@ export function Phase3Page(): JSX.Element {
             {effectiveWorstContaminant ? (
               <div className={`mt-2 space-y-0.5 text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>
                 <p className={`text-base font-semibold ${isLight ? "text-slate-900" : "text-white"}`}>{effectiveWorstContaminant.label}</p>
-                <p>
-                  <MetricLabel label="Safety score (lower is worse)" isLight={isLight} />{" "}
-                  {effectiveWorstContaminant.score.toFixed(1)}
-                </p>
-                <p>
-                  <MetricLabel label="Risk index" isLight={isLight} />{" "}
-                  {effectiveWorstContaminant.risk.toFixed(4)}
-                </p>
                 <p>
                   <MetricLabel label="Risk score" isLight={isLight} />{" "}
                   {(effectiveWorstContaminant.risk * 100).toFixed(1)}

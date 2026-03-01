@@ -163,4 +163,9 @@ export interface ContaminantBarDatum {
   measured: number;
   ewgGuideline: number | null;
   legalLimit: number | null;
+  secondaryMeasured?: number | null;
+  secondaryLabel?: string;
+  secondaryUnit?: string;
+  secondaryEwgGuideline?: number | null;
+  secondaryLegalLimit?: number | null;
 }

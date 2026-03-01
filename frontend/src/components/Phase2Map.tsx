@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { CircleMarker, GeoJSON, MapContainer, Marker, Popup, TileLayer, Tooltip, ZoomControl, useMap } from "react-leaflet";
 import { divIcon, type Layer } from "leaflet";
 import type { WellServiceAreaFeature, WellServiceAreasGeoJson, WellSummary } from "../types/phase2";
@@ -27,52 +27,6 @@ interface WellMarkerRow {
 function formatNumber(value: number | null | undefined, unit: string): string {
   if (value == null || Number.isNaN(value)) return "Not reported";
   return `${value} ${unit}`;
-}
-
-type BoundsTuple = [[number, number], [number, number]];
-
-function computeGeoJsonBounds(geojson: WellServiceAreasGeoJson): BoundsTuple | null {
-  let minLng = Number.POSITIVE_INFINITY;
-  let minLat = Number.POSITIVE_INFINITY;
-  let maxLng = Number.NEGATIVE_INFINITY;
-  let maxLat = Number.NEGATIVE_INFINITY;
-
-  const visit = (coords: any): void => {
-    if (!Array.isArray(coords) || coords.length === 0) return;
-    if (typeof coords[0] === "number" && typeof coords[1] === "number") {
-      const lng = Number(coords[0]);
-      const lat = Number(coords[1]);
-      if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-      minLng = Math.min(minLng, lng);
-      minLat = Math.min(minLat, lat);
-      maxLng = Math.max(maxLng, lng);
-      maxLat = Math.max(maxLat, lat);
-      return;
-    }
-    for (const nested of coords) {
-      visit(nested);
-    }
-  };
-
-  for (const feature of geojson.features) {
-    visit((feature as WellServiceAreaFeature).geometry.coordinates);
-  }
-
-  if (
-    !Number.isFinite(minLng) ||
-    !Number.isFinite(minLat) ||
-    !Number.isFinite(maxLng) ||
-    !Number.isFinite(maxLat)
-  ) {
-    return null;
-  }
-
-  const latMargin = 0.015;
-  const lngMargin = 0.02;
-  return [
-    [minLat - latMargin, minLng - lngMargin],
-    [maxLat + latMargin, maxLng + lngMargin]
-  ];
 }
 
 function geometryCenter(feature: WellServiceAreaFeature): [number, number] | null {
@@ -110,38 +64,92 @@ function createWellMarkerIcon(color: string, selected: boolean, theme: "dark" | 
 
   const glow = selected
     ? theme === "light"
-      ? "0 0 0 4px rgba(2,132,199,0.22)"
-      : "0 0 0 4px rgba(103,232,249,0.22)"
-    : "none";
+      ? "0 0 0 4px rgba(2,132,199,0.2)"
+      : "0 0 0 4px rgba(103,232,249,0.2)"
+    : theme === "light"
+      ? "0 2px 6px rgba(15,23,42,0.18)"
+      : "0 2px 6px rgba(2,6,23,0.45)";
+
+  const innerDisk = theme === "light" ? "rgba(255,255,255,0.92)" : "rgba(2,6,23,0.76)";
+  const glyph = theme === "light" ? "#0f172a" : "#e2e8f0";
+  const highlight = theme === "light" ? "rgba(255,255,255,0.38)" : "rgba(255,255,255,0.16)";
 
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="34" viewBox="0 0 28 34" aria-hidden="true">
-      <path d="M14 32s10-9.2 10-17A10 10 0 1 0 4 15c0 7.8 10 17 10 17Z" fill="${color}" stroke="${ring}" stroke-width="2" style="filter: drop-shadow(${glow});"/>
-      <rect x="9" y="12" width="10" height="7" rx="1.4" fill="rgba(255,255,255,0.92)" stroke="${ring}" stroke-width="1"/>
-      <rect x="13" y="9" width="2" height="10" fill="${ring}"/>
-      <rect x="8" y="12" width="12" height="2" fill="${ring}"/>
-      <circle cx="14" cy="22" r="2.2" fill="${ring}"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40" aria-hidden="true">
+      <path
+        d="M16 38C16 38 28 27.5 28 16.8C28 10.3 22.7 5 16 5C9.3 5 4 10.3 4 16.8C4 27.5 16 38 16 38Z"
+        fill="${color}"
+        stroke="${ring}"
+        stroke-width="2.2"
+        style="filter: drop-shadow(${glow});"
+      />
+      <path d="M8 13.4C9.7 9.1 12.4 7.3 16 7.3C19.7 7.3 22.5 9.5 24 13.6" fill="none" stroke="${highlight}" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="16" cy="17" r="8.4" fill="${innerDisk}" stroke="${ring}" stroke-width="1.2"/>
+      <path d="M12.7 17.5h6.6M13.8 17.5v4.2M18.2 17.5v4.2M12.9 17.5l3.1-2.1 3.1 2.1" fill="none" stroke="${glyph}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="14.8" y="19.3" width="2.4" height="1.9" rx="0.5" fill="none" stroke="${glyph}" stroke-width="1.3"/>
+      <path d="M16 17.6v1.7M12.2 22.4h7.6" fill="none" stroke="${glyph}" stroke-width="1.4" stroke-linecap="round"/>
     </svg>
   `;
 
   return divIcon({
     html: svg,
     className: "tapmap-well-marker-wrap",
-    iconSize: [28, 34],
-    iconAnchor: [14, 32],
-    popupAnchor: [0, -28],
-    tooltipAnchor: [0, -26]
+    iconSize: [32, 40],
+    iconAnchor: [16, 38],
+    popupAnchor: [0, -32],
+    tooltipAnchor: [0, -30]
   });
 }
 
-function MapFocus({ point }: { point: { lat: number; lng: number } | null }): null {
+function MapFocus({
+  point,
+  selectedWellIds,
+  wellsById
+}: {
+  point: { lat: number; lng: number } | null;
+  selectedWellIds?: string[];
+  wellsById: Record<string, WellSummary>;
+}): null {
   const map = useMap();
+  const lastFocusKeyRef = useRef<string>("");
 
   useEffect(() => {
+    const coords: Array<[number, number]> = [];
     if (point) {
-      map.flyTo([point.lat, point.lng], 12, { duration: 0.8 });
+      coords.push([point.lat, point.lng]);
     }
-  }, [map, point]);
+
+    const uniqueWellIds = new Set((selectedWellIds ?? []).map((value) => String(value)));
+    for (const wellId of uniqueWellIds) {
+      const well = wellsById[wellId];
+      if (!well) continue;
+      if (!Number.isFinite(well.lat) || !Number.isFinite(well.lng)) continue;
+      coords.push([well.lat, well.lng]);
+    }
+
+    if (coords.length === 0) return;
+
+    const focusKey = coords
+      .map(([lat, lng]) => `${lat.toFixed(5)},${lng.toFixed(5)}`)
+      .sort()
+      .join("|");
+    if (focusKey === lastFocusKeyRef.current) return;
+
+    // Address flow often updates in two quick stages (point first, then mapped wells).
+    // Delay the camera update briefly so we animate once with the final target set.
+    const delayMs = point && uniqueWellIds.size === 0 ? 340 : 140;
+    const timer = window.setTimeout(() => {
+      if (coords.length === 1) {
+        const [lat, lng] = coords[0];
+        map.flyTo([lat, lng], 12, { duration: 0.95, easeLinearity: 0.2, animate: true });
+      } else {
+        map.flyToBounds(coords, { padding: [56, 56], maxZoom: 13, duration: 1.05, easeLinearity: 0.2 });
+      }
+      lastFocusKeyRef.current = focusKey;
+    }, delayMs);
+
+    return () => window.clearTimeout(timer);
+  }, [map, point, selectedWellIds, wellsById]);
 
   return null;
 }
@@ -158,7 +166,6 @@ export function Phase2Map({
 }: Phase2MapProps): JSX.Element {
   const madisonCenter: [number, number] = [43.0731, -89.4012];
   const isLight = theme === "light";
-  const mapBounds = useMemo(() => computeGeoJsonBounds(geojson), [geojson]);
   const geoJsonVersionKey = useMemo(() => {
     const ids = Object.keys(wellsById).sort();
     return ids.join("|");
@@ -227,9 +234,6 @@ export function Phase2Map({
         zoom={11}
         className="h-full w-full"
         zoomControl={!immersive}
-        bounds={mapBounds ?? undefined}
-        maxBounds={mapBounds ?? undefined}
-        maxBoundsViscosity={0.95}
       >
         <TileLayer
           attribution={
@@ -247,7 +251,7 @@ export function Phase2Map({
         />
 
         {immersive ? <ZoomControl position="bottomright" /> : null}
-        <MapFocus point={selectedPoint} />
+        <MapFocus point={selectedPoint} selectedWellIds={selectedWellIds} wellsById={wellsById} />
 
         <GeoJSON
           key={`well-zones-${geoJsonVersionKey || "empty"}`}

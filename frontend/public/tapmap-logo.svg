@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="TapMap logo">
+  <defs>
+    <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <circle cx="34" cy="112" r="8" fill="#34A853"/>
+  <circle cx="220" cy="100" r="7" fill="#EA4335"/>
+  <circle cx="210" cy="148" r="8" fill="#34A853"/>
+  <circle cx="42" cy="154" r="6" fill="#FBBC04"/>
+
+  <path
+    d="M128 238C128 238 214 136 214 90C214 45 177 12 128 12C79 12 42 45 42 90C42 136 128 238 128 238Z"
+    fill="#4F86E8"
+    filter="url(#drop)"
+  />
+
+  <path d="M70 94C82 86 96 86 108 94C120 102 136 102 148 94C160 86 174 86 186 92" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <path d="M64 116C78 108 96 108 110 116C124 124 142 124 156 116C170 108 184 108 196 114" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <path d="M60 138C74 130 92 130 106 138C120 146 138 146 152 138C166 130 184 130 198 136" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+
+  <circle cx="128" cy="94" r="11" fill="#4F86E8" stroke="#FFFFFF" stroke-width="5"/>
+</svg>
