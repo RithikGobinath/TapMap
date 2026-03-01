@@ -209,6 +209,7 @@ def load_well_records(data_dir: Path) -> dict[str, WellRecord]:
             "pfhxs_ppt": pfas_row.get("pfhxs_ppt"),
             "historical_max_pfas_ppt": pfas_row.get("historical_max_pfas_ppt"),
             "pfas_status": pfas_row.get("pfas_status", "unknown"),
+            "pfas_source_url": pfas_row.get("source_url"),
             "nitrate_mg_l": inorganics_row.get("nitrate_mg_l"),
             "chromium6_ug_l": inorganics_row.get("chromium6_ug_l"),
             "sodium_mg_l": inorganics_row.get("sodium_mg_l"),
@@ -218,6 +219,16 @@ def load_well_records(data_dir: Path) -> dict[str, WellRecord]:
         }
         quality = dict(inorganics_row.get("quality", {}))
         quality["pfas_status"] = str(contaminants["pfas_status"] or "unknown")
+        if contaminants["total_pfas_ppt"] is not None:
+            has_breakdown = any(contaminants.get(field) is not None for field in ("pfoa_ppt", "pfos_ppt", "pfhxs_ppt"))
+            if has_breakdown:
+                quality["pfas_total_ppt"] = "measured"
+            elif quality["pfas_status"] == "detected":
+                quality["pfas_total_ppt"] = "estimated"
+            elif quality["pfas_status"] == "not_detected":
+                quality["pfas_total_ppt"] = "not_detected"
+            else:
+                quality["pfas_total_ppt"] = "unknown"
 
         records[well_id] = WellRecord(
             well_id=well_id,

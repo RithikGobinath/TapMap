@@ -1,0 +1,8 @@
+fuzz_requests=400
+failures=0
+out_of_zone_count=399
+latency_ms_mean=0.319
+latency_ms_p50=0.307
+latency_ms_p95=0.356
+latency_ms_p99=0.475
+fuzz_perf=PASS

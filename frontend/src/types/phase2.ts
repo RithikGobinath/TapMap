@@ -108,6 +108,7 @@ export interface MultiContaminantSnapshot {
   pfhxs_ppt: number | null;
   historical_max_pfas_ppt: number | null;
   pfas_status: string | null;
+  pfas_source_url?: string | null;
   nitrate_mg_l: number | null;
   chromium6_ug_l: number | null;
   sodium_mg_l: number | null;
@@ -153,4 +154,13 @@ export interface ScoreResponse {
   contaminants: MultiContaminantSnapshot;
   worstContaminant: WorstContaminant;
   comparisons: Partial<Record<CategoryKey, CategoryComparison>>;
+}
+
+export interface ContaminantBarDatum {
+  key: CategoryKey;
+  label: string;
+  unit: string;
+  measured: number;
+  ewgGuideline: number | null;
+  legalLimit: number | null;
 }

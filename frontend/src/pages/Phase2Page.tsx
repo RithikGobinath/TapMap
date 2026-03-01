@@ -273,7 +273,7 @@ export function Phase2Page(): JSX.Element {
         <input
           value={address}
           onChange={(event) => setAddress(event.target.value)}
-          placeholder="Enter Madison address (ex: 600 N Park St, Madison, WI)"
+          placeholder="Enter Address"
           className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
         />
         <button
@@ -296,6 +296,7 @@ export function Phase2Page(): JSX.Element {
           geojson={serviceAreas}
           wellsById={wellsById}
           selectedWellId={selectedWellId}
+          selectedWellIds={scoreResponse?.wellIds ?? (selectedWellId ? [selectedWellId] : [])}
           selectedPoint={selectedPoint}
           onZoneSelect={handleZoneSelect}
         />

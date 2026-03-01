@@ -1,18 +1,96 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --tapmap-body-bg: #05070d;
+  --tapmap-body-text: #e2e8f0;
+  --tapmap-map-bg: #030712;
+  --tapmap-zoom-bg: rgba(2, 6, 23, 0.85);
+  --tapmap-zoom-text: #cbd5e1;
+  --tapmap-zoom-border: #334155;
+  --tapmap-attribution-bg: rgba(2, 6, 23, 0.65);
+  --tapmap-attribution-text: #94a3b8;
+  --tapmap-popup-bg: rgba(2, 6, 23, 0.96);
+  --tapmap-popup-text: #e2e8f0;
+  --tapmap-popup-border: rgba(51, 65, 85, 0.8);
+}
+
+[data-theme="light"] {
+  --tapmap-body-bg: #f8fafc;
+  --tapmap-body-text: #0f172a;
+  --tapmap-map-bg: #e2e8f0;
+  --tapmap-zoom-bg: rgba(255, 255, 255, 0.92);
+  --tapmap-zoom-text: #334155;
+  --tapmap-zoom-border: #cbd5e1;
+  --tapmap-attribution-bg: rgba(255, 255, 255, 0.9);
+  --tapmap-attribution-text: #475569;
+  --tapmap-popup-bg: rgba(255, 255, 255, 0.96);
+  --tapmap-popup-text: #0f172a;
+  --tapmap-popup-border: rgba(148, 163, 184, 0.8);
+}
+
 body {
   margin: 0;
-  font-family: "Space Grotesk", "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  background:
-    radial-gradient(circle at 10% 0%, rgba(14, 165, 233, 0.12), transparent 32%),
-    radial-gradient(circle at 90% 15%, rgba(245, 158, 11, 0.12), transparent 30%),
-    #f8fafc;
+  font-family: "Sora", "Space Grotesk", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--tapmap-body-bg);
+  color: var(--tapmap-body-text);
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
 }
 
 * {
   box-sizing: border-box;
+}
+
+.leaflet-container {
+  background: var(--tapmap-map-bg);
+}
+
+.leaflet-control-zoom a {
+  background: var(--tapmap-zoom-bg);
+  color: var(--tapmap-zoom-text);
+  border-color: var(--tapmap-zoom-border);
+}
+
+.leaflet-control-attribution {
+  background: var(--tapmap-attribution-bg) !important;
+  color: var(--tapmap-attribution-text) !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--tapmap-popup-bg);
+  color: var(--tapmap-popup-text);
+  border: 1px solid var(--tapmap-popup-border);
+}
+
+.tapmap-map-light .leaflet-popup-content-wrapper a {
+  color: #0c4a6e;
+}
+
+.tapmap-map-dark .leaflet-popup-content-wrapper a {
+  color: #22d3ee;
+}
+
+.tapmap-well-marker-wrap {
+  background: transparent;
+  border: 0;
+}
+
+.tapmap-map-dark .leaflet-tooltip {
+  background: rgba(2, 6, 23, 0.9);
+  color: #e2e8f0;
+  border: 1px solid rgba(51, 65, 85, 0.85);
+}
+
+.tapmap-map-light .leaflet-tooltip {
+  background: rgba(255, 255, 255, 0.94);
+  color: #0f172a;
+  border: 1px solid rgba(148, 163, 184, 0.85);
 }

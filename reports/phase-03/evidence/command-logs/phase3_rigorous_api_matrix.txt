@@ -1,0 +1,11 @@
+[phase3-rigorous] fetching /api/wells
+wells_count=22
+score_min=32.8
+score_max=88.3
+score_avg=66.96
+grade_distribution=B,C,D,F
+unique_worst_count=5
+negative_cases=4 PASS
+weighted_mix_monotonic=PASS lowHeavy=38.4 highHeavy=82.8
+out_of_zone=PASS fallbackWell=31
+[phase3-rigorous] API matrix PASS

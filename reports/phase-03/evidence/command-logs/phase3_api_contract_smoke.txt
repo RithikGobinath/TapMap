@@ -1,0 +1,8 @@
+GET /api/wells status: 200
+wells count: 22
+first well keys: ['availableCategories', 'categoryScores', 'comparisons', 'contaminants', 'grade', 'id', 'lat', 'latestTestDate', 'lng', 'name', 'quality', 'riskLevel', 'score', 'status', 'violationCount', 'worstContaminant']
+POST /api/score status: 200
+score keys: ['availableCategories', 'breakdown', 'categoryScores', 'comparisons', 'contaminants', 'grade', 'lastUpdated', 'limits', 'outOfZone', 'score', 'wellIds', 'worstContaminant', 'zoneId']
+score: 67.3 grade: D
+availableCategories: ['nitrate', 'chromium6', 'radionuclides', 'sodiumChloride', 'violations', 'voc']
+phase3 required fields present: True

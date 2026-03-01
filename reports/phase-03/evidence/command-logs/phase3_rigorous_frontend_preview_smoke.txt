@@ -1,0 +1,20 @@
+GET /
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"187-VmG9ZWfUsSLl6A+on4pn151g8+s"
+Date: Sun, 01 Mar 2026 09:16:30 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+GET /phase-3
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"187-VmG9ZWfUsSLl6A+on4pn151g8+s"
+Date: Sun, 01 Mar 2026 09:16:30 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+

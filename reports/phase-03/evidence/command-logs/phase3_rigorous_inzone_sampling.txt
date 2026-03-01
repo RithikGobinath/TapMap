@@ -1,0 +1,5 @@
+samples=264
+status_failures=0
+in_zone_hits=264
+in_zone_hit_rate=1.000
+inzone_sampling=PASS

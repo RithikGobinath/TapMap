@@ -1,0 +1,18 @@
+
+> tapmap-frontend@0.1.0 build
+> tsc -b && vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 892 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                       0.39 kB │ gzip:   0.26 kB
+dist/assets/index-Dr-J8GJC.css       29.43 kB │ gzip:   9.80 kB
+dist/assets/StatusPage-DMPwlwpg.js    0.79 kB │ gzip:   0.46 kB
+dist/assets/HomePage-DtyQiOCr.js      0.90 kB │ gzip:   0.46 kB
+dist/assets/Phase2Page-Btu1dSF0.js   14.23 kB │ gzip:   4.07 kB
+dist/assets/index-CfJeXAb7.js       166.72 kB │ gzip:  54.48 kB
+dist/assets/geo-QLQHDbJD.js         229.33 kB │ gzip:  65.63 kB
+dist/assets/Phase3Page-B5Z0UmOA.js  369.19 kB │ gzip: 103.37 kB
+✓ built in 1.69s
